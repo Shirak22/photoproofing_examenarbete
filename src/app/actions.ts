@@ -12,3 +12,16 @@ export async function createClient(
     return { message: "Failed!" };
   }
 }
+
+export async function createAlbum(
+  prevState: { message: string },
+  formData: FormData
+) {
+  const data = formData;
+  try {
+    console.log(data.get("title"));
+    return { message: `Album "${data.get("title")}" created` };
+  } catch (err) {
+    return { message: "Failed!" };
+  }
+}
