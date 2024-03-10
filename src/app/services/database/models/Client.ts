@@ -1,16 +1,13 @@
 import { TClient } from "@/app/core/types";
-import {Schema,model, models} from "mongoose";
-import  {v4 as uuidv4}  from "uuid"; 
-
-
+import { Schema, model, models } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 const clientSchema = new Schema<TClient>({
-    clientId: {
+  clientId: {
     type: String,
-    default: uuidv4(),
     required: true,
   },
-    clientName: {
+  clientName: {
     type: String,
     required: true,
   },
@@ -18,34 +15,38 @@ const clientSchema = new Schema<TClient>({
     type: String,
     required: true,
   },
-    photographerId: {
-        type: String,
-        required: true,
+  photographerId: {
+    type: String,
+    required: true,
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now,
+    required: true,
+  },
+  Albums: [
+    {
+      type: String,
+      required: true,
     },
-    createdDate: {
-        type: Date,
-        default: Date.now,
-        required: true,
+  ],
+  contact: {
+    email: {
+      type: String,
+      required: true,
     },
-    Albums: [{
-        type: String,
-        required: true,
-    }],
-    contact: {
-        email: {
-            type: String,
-            required: true,
-        },
-        phone: {
-            type: String,
-            required: true,
-        },
+    phone: {
+      type: String,
+      required: true,
     },
-    
+  },
 });
 
-const Client = models.Client || model('Client', clientSchema);
+clientSchema.pre("save", function (next) {
+  this.clientId = uuidv4();
+  next();
+});
 
-
+const Client = models.Client || model("Client", clientSchema);
 
 export default Client;
