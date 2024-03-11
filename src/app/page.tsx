@@ -1,12 +1,4 @@
-import { connectToDB } from "../app/services/database/db";
-import User from "../app/services/database/models/User";
-import Album from "../app/services/database/models/Album";
-import Image from "../app/services/database/models/Image";
-import { TAlbum, TClient, TImage, TUser } from "./core/types";
-import Client from "./services/database/models/Client";
-import NewClientForm from "./components/NewClientForm";
-import NewAlbumForm from "./components/NewAlbumForm";
-connectToDB();
+import NewClientForm from "@/components/NewClientForm";
 
 export default async function Home() {
   return (

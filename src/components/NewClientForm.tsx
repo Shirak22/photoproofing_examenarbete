@@ -1,18 +1,18 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { createAlbum } from "../actions";
+import { createClient } from "../app/actions";
 
 const initialState = {
   message: "Send us a message",
 };
 
-export default function NewAlbumForm() {
-  const [response, setForm] = useFormState(createAlbum, initialState);
+export default function NewClientForm() {
+  const [response, setForm] = useFormState(createClient, initialState);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
-      <h1 className="text-4xl font-bold mb-8">New Album</h1>
+      <h1 className="text-4xl font-bold mb-8">New Client</h1>
       <p>{response.message}</p>
       <form
         className="flex flex-col items-center justify-center w-1/3"
@@ -20,50 +20,49 @@ export default function NewAlbumForm() {
       >
         <div className="flex flex-col items-start w-full mb-4">
           <label htmlFor="clientName" className="text-xl font-semibold mb-2">
-            Title
+            Name
           </label>
           <input
             type="text"
-            id="title"
-            name="title"
+            id="name"
+            name="name"
             className="w-full p-2 border-2 border-gray-300 rounded-md"
           />
         </div>
         <div className="flex flex-col items-start w-full mb-4">
           <label htmlFor="address" className="text-xl font-semibold mb-2">
-            Description
+            Address
           </label>
           <input
             type="text"
-            id="description"
-            name="description"
+            id="address"
+            name="address"
             className="w-full p-2 border-2 border-gray-300 rounded-md"
           />
         </div>
         <div className="flex flex-col items-start w-full mb-4">
           <label htmlFor="email" className="text-xl font-semibold mb-2">
-            Selected limit
+            Email
           </label>
           <input
-            type="number"
-            id="selectedLimit"
-            name="selectedLimit"
+            type="text"
+            id="email"
+            name="email"
             className="w-full p-2 border-2 border-gray-300 rounded-md"
           />
         </div>
         <div className="flex flex-col items-start w-full mb-4">
           <label htmlFor="phone" className="text-xl font-semibold mb-2">
-            Proofing
+            Phone
           </label>
           <input
-            type="checkbox"
-            id="proofing"
-            name="proofing"
-            defaultChecked={true}
+            type="text"
+            id="phone"
+            name="phone"
             className="w-full p-2 border-2 border-gray-300 rounded-md"
           />
         </div>
-        <button type="submit">Create Album</button>
+        <button type="submit">Add Client</button>
       </form>
     </div>
   );

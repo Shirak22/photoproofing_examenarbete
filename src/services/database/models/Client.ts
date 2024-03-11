@@ -1,10 +1,11 @@
-import { TClient } from "@/app/core/types";
+import { TClient } from "@/core/types";
 import { Schema, model, models } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
 const clientSchema = new Schema<TClient>({
   clientId: {
     type: String,
+    default: uuidv4(),
     required: true,
   },
   clientName: {

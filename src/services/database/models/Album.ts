@@ -1,7 +1,6 @@
-import { TAlbum } from "@/app/core/types";
-import {Schema,model, models} from "mongoose";
-import  {v4 as uuidv4}  from "uuid"; 
-
+import { TAlbum } from "@/core/types";
+import { Schema, model, models } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 const albumSchema = new Schema<TAlbum>({
   albumId: {
@@ -33,10 +32,12 @@ const albumSchema = new Schema<TAlbum>({
     type: Number,
     required: true,
   },
-  images: [{
-    type: String,
-    required: true,
-  }],
+  images: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   confirmed: {
     type: Boolean,
     default: false,
@@ -47,11 +48,13 @@ const albumSchema = new Schema<TAlbum>({
     default: true,
     required: true,
   },
-    
 });
 
-const Album = models.Album || model('Album', albumSchema);
+albumSchema.pre("save", function (next) {
+  this.albumId = uuidv4();
+  next();
+});
 
-
+const Album = models.Album || model("Album", albumSchema);
 
 export default Album;
