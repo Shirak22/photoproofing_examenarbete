@@ -1,5 +1,6 @@
 "use client";
 
+import { getAlbum, getClient } from "@/app/actions";
 import { usePathname } from "next/navigation";
 
 export default function Breadcrumbs() {
@@ -7,6 +8,10 @@ export default function Breadcrumbs() {
 
   const pathSegments = pathname.split("/").filter((segment) => segment !== "");
   pathSegments.shift();
+
+  
+  
+
 
   return (
     <nav className="flex ml-10 mb-20" aria-label="Breadcrumb">

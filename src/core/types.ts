@@ -44,4 +44,5 @@ export  interface TClient{
     images: string[]  ,
     confirmed: boolean, 
     proofing: boolean,
+    albumUrl: string,
   }

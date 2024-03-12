@@ -1,10 +1,16 @@
 import { getAllClients } from "@/app/actions";
 import { TClient } from "@/core/types";
+import Link from "next/link";
+import EmptyState from "./EmptyState";
 
 export default async function ClientTableSSR() {
-  const clients = await getAllClients("6c8eff3b-0615-43d6-b6bb-7524512eeab0");
+  const clients = await getAllClients("6c8eff3b-0615-43d6-b6bb-7524512e45fd");
+
 
   return (
+    <>
+
+    {clients && Array.isArray(clients) && clients.length > 0 ? (
     <table className="min-w-full divide-y divide-gray-300">
       <thead>
         <tr>
@@ -38,12 +44,12 @@ export default async function ClientTableSSR() {
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
-        {clients &&
-          Array.isArray(clients) &&
-          clients.map((client: TClient) => (
+        {clients.map((client: TClient) => (
             <tr key={client.clientId}>
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                <Link href={`/dashboard/${client.clientId}`}>
                 {client.clientName}
+                </Link>
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 {client.address}
@@ -64,5 +70,10 @@ export default async function ClientTableSSR() {
           ))}
       </tbody>
     </table>
+  ): (
+    <EmptyState type="Client" />
+  )}
+  </>
   );
+
 }

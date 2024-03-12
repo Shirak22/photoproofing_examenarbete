@@ -48,10 +48,15 @@ const albumSchema = new Schema<TAlbum>({
     default: true,
     required: true,
   },
+  albumUrl: {
+    type: String,
+    default: "",
+  },
 });
 
 albumSchema.pre("save", function (next) {
   this.albumId = uuidv4();
+  this.albumUrl = `/client/${this.albumId}`
   next();
 });
 

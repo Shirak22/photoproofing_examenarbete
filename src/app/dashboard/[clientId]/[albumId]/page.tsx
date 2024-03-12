@@ -1,7 +1,9 @@
+import { getAlbum } from "@/app/actions";
 import AlbumGrid from "@/components/AlbumGrid";
 import DashboardLayout from "@/components/DashboardLayout";
+import EmptyState from "@/components/EmptyState";
 
-export default function Album({
+export default async function Album({
   params,
 }: {
   params: {
@@ -9,49 +11,17 @@ export default function Album({
     albumId: string;
   };
 }) {
-  const files = [
-    {
-      title: "IMG_4985.HEIC",
-      size: "3.9 MB",
-      source:
-        "https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80",
-    },
-    {
-      title: "IMG_4985.HEIC",
-      size: "3.9 MB",
-      source:
-        "https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80",
-    },
-    {
-      title: "IMG_4985.HEIC",
-      size: "3.9 MB",
-      source:
-        "https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80",
-    },
-    {
-      title: "IMG_4985.HEIC",
-      size: "3.9 MB",
-      source:
-        "https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80",
-    },
-    {
-      title: "IMG_4985.HEIC",
-      size: "3.9 MB",
-      source:
-        "https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80",
-    },
-    {
-      title: "IMG_4985.HEIC",
-      size: "3.9 MB",
-      source:
-        "https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=512&q=80",
-    },
-  ];
+  
+
+
+
+  const album = await getAlbum(params.albumId);
 
   return (
     <DashboardLayout>
-      <h1 className="text-5xl font-bold">{params.albumId.toUpperCase()}</h1>
-      <AlbumGrid files={files} />
+      <h1 className="text-5xl font-bold">{album.title}</h1>
+      {/* <AlbumGrid files={files} /> */}
+      <EmptyState type="Images" />
     </DashboardLayout>
   );
 }

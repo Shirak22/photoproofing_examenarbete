@@ -1,6 +1,7 @@
 import DashboardLayout from "@/components/DashboardLayout";
 import NewClientForm from "@/components/NewClientForm";
 import ClientTableSSR from "@/components/ClientTableSSR";
+import EmptyState from "@/components/EmptyState";
 
 export default async function Dashboard() {
   return (
