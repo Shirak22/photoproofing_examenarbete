@@ -1,5 +1,6 @@
 "use server";
 
+import { uploadFilesToS3 } from "@/services/S3/upload-tools";
 import Album from "@/services/database/models/Album";
 import Client from "@/services/database/models/Client";
 import { validateEmail } from "@/utils/helpers";
@@ -136,5 +137,24 @@ export async function getAlbum(albumId: string) {
     return album;
   } catch (err) {
     return { message: "Failed!" };
+  }
+}
+
+
+
+export async function uploadFiles(
+  formData: FormData,
+  albumId: string
+) {
+  let files =  formData.getAll("file") as File[]; 
+
+  try {
+   
+    await uploadFilesToS3(files, albumId); 
+    
+    
+  } catch (error) {
+    return { message: "file upload Failed!" };
+    
   }
 }
