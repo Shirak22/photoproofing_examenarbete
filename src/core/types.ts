@@ -34,6 +34,13 @@ export  interface TClient{
     path: string,
   }
 
+  export interface TThumbnail {
+    imageId: string,
+    albumId: string,
+    size: number,
+    path: string,
+  }
+  
  export interface TAlbum {
     albumId: string,
     clientId: string,

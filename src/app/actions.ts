@@ -152,9 +152,8 @@ export async function uploadImages(
   try {
     //resizeing 
     //watermarking
-    // const thumbnails = await createThumbnails(files);
-    // await uploadFiles(thumbnails, albumId, true); 
-    await uploadFiles(files, albumId); 
+    await uploadFiles(files, albumId);
+    
   } catch (error) {
     console.log(error);
     
