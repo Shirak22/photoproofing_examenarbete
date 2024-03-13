@@ -31,6 +31,7 @@ export  interface TClient{
     readableTitle: string,
     selected?: boolean,
     extension: string,
+    path: string,
   }
 
  export interface TAlbum {

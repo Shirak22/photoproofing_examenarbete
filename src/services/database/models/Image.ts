@@ -36,6 +36,11 @@ const imageSchema = new Schema<TImage>({
     type: String,
     required: true,
   },
+  path: {
+    type: String,
+    required: true,
+  },
+  
 });
 
 imageSchema.pre("save",function(next){

@@ -1,9 +1,10 @@
 "use server";
 
-import { uploadFilesToS3 } from "@/services/S3/upload-tools";
+import {  uploadFiles } from "@/services/S3/upload-tools";
 import Album from "@/services/database/models/Album";
 import Client from "@/services/database/models/Client";
 import { validateEmail } from "@/utils/helpers";
+import { log } from "console";
 import { useParams } from "next/navigation";
 
 export async function createClient(
@@ -142,19 +143,20 @@ export async function getAlbum(albumId: string) {
 
 
 
-export async function uploadFiles(
+export async function uploadImages(
   formData: FormData,
   albumId: string
 ) {
   let files =  formData.getAll("file") as File[]; 
 
   try {
-   
-    await uploadFilesToS3(files, albumId); 
-    
-    
+    //resizeing 
+    //watermarking
+    // const thumbnails = await createThumbnails(files);
+    // await uploadFiles(thumbnails, albumId, true); 
+    await uploadFiles(files, albumId); 
   } catch (error) {
-    return { message: "file upload Failed!" };
+    console.log(error);
     
   }
 }
