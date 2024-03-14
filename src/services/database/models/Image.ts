@@ -14,16 +14,10 @@ const imageSchema = new Schema<TImage>({
   },
   uploadDate: {
     type: Date,
-    default: Date.now,
     required: true,
   },
   createdDate: {
     type: Date,
-    default: Date.now,
-    required: true,
-  },
-  path: {
-    type: String,
     required: true,
   },
   size: {
@@ -37,13 +31,22 @@ const imageSchema = new Schema<TImage>({
   selected: {
     type: Boolean,
     default: false,
-    required: true,
   },
   extension: {
     type: String,
     required: true,
   },
+  path: {
+    type: String,
+    required: true,
+  },
+  
 });
+
+imageSchema.pre("save",function(next){
+  this.createdDate = new Date();
+  next();
+}); 
 
 const Image = models.Image || model("Image", imageSchema);
 

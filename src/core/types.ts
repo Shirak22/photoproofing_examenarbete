@@ -25,14 +25,22 @@ export  interface TClient{
  export interface TImage {
     imageId: string,
     albumId: string,
-    uploadDate: Date,
+    uploadDate?: Date,
     createdDate: Date,
     size: number,
     readableTitle: string,
-    selected: boolean,
+    selected?: boolean,
     extension: string,
+    path: string,
   }
 
+  export interface TThumbnail {
+    imageId: string,
+    albumId: string,
+    size: number,
+    path: string,
+  }
+  
  export interface TAlbum {
     albumId: string,
     clientId: string,
