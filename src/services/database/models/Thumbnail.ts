@@ -19,9 +19,7 @@ const thumbnailSchema = new Schema<TThumbnail>({
     type: String,
     required: true,
   },
-  
 });
-
 
 const Thumbnail = models.Thumbnail || model("Thumbnail", thumbnailSchema);
 

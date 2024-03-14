@@ -1,8 +1,9 @@
 "use server";
 
-import {  uploadFiles } from "@/services/S3/upload-tools";
+import { getImageUrl, uploadFiles } from "@/services/S3/upload-tools";
 import Album from "@/services/database/models/Album";
 import Client from "@/services/database/models/Client";
+import Thumbnail from "@/services/database/models/Thumbnail";
 import { validateEmail } from "@/utils/helpers";
 import { log } from "console";
 import { useParams } from "next/navigation";
@@ -34,10 +35,10 @@ export async function createClient(
     // This does not apply to other photographers, meaning the same email can be used by different photographers
     const clientEmailExists = await Client.findOne({
       "contact.email": data.get("email"),
-      "photographerId": photographerId
+      photographerId: photographerId,
     });
 
-    if (clientEmailExists ) {
+    if (clientEmailExists) {
       return {
         message: `The client with email '${data.get("email")}' already exists`,
       };
@@ -141,21 +142,47 @@ export async function getAlbum(albumId: string) {
   }
 }
 
-
-
-export async function uploadImages(
-  formData: FormData,
-  albumId: string
-) {
-  let files =  formData.getAll("file") as File[]; 
+export async function uploadImages(formData: FormData, albumId: string) {
+  let files = formData.getAll("file") as File[];
 
   try {
-    //resizeing 
+    //resizeing
     //watermarking
     await uploadFiles(files, albumId);
-    
   } catch (error) {
     console.log(error);
-    
+  }
+}
+
+// export interface TAlbum {
+//   albumId: string,
+//   clientId: string,
+//   title:string,
+//   description:string,
+//   password:string,
+//   createdDate: Date,
+//   selectedLimit: number,
+//   images: string[]  ,
+//   confirmed: boolean,
+//   proofing: boolean,
+//   albumUrl: string,
+// }
+
+export async function getAlbumThumbnails(albumId: string) {
+  try {
+    const images = await Thumbnail.find({ albumId }).select("path");
+    if (!images || images.length === 0) return;
+
+    const s3Images = Promise.all(
+      images.map(async (image) => {
+        return await getImageUrl(image.path);
+      })
+    );
+
+    console.log("S3 Images ACTION:", await s3Images);
+
+    return s3Images;
+  } catch (error) {
+    console.log(error);
   }
 }
