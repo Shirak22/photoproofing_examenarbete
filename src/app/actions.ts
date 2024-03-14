@@ -5,9 +5,7 @@ import Album from "@/services/database/models/Album";
 import Client from "@/services/database/models/Client";
 import Thumbnail from "@/services/database/models/Thumbnail";
 import { validateEmail } from "@/utils/helpers";
-import { log } from "console";
-import { useParams } from "next/navigation";
-
+import Image from "@/services/database/models/Image";
 export async function createClient(
   prevState: { message: string },
   formData: FormData
@@ -142,6 +140,19 @@ export async function getAlbum(albumId: string) {
   }
 }
 
+export async function updateSelectedImage(imageId: string, selected: boolean) {
+  try {
+    const image = await Image.findOne({
+      imageId,
+    }).select("selected");
+
+    image.selected = selected;
+    await image.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function uploadImages(formData: FormData, albumId: string) {
   let files = formData.getAll("file") as File[];
 
@@ -170,18 +181,47 @@ export async function uploadImages(formData: FormData, albumId: string) {
 
 export async function getAlbumThumbnails(albumId: string) {
   try {
-    const images = await Thumbnail.find({ albumId }).select("path");
+    const images = await Thumbnail.find({ albumId })
+      .select("path")
+      .select("imageId");
     if (!images || images.length === 0) return;
 
-    const s3Images = Promise.all(
+    const ImagePromises = Promise.all(
       images.map(async (image) => {
-        return await getImageUrl(image.path);
+        const getImageData = await Image.findOne({
+          imageId: image.imageId,
+        })
+          .select("-path")
+          .select("-imageId")
+          .select("-_id")
+          .select("-__v");
+
+        const imageInfo = {
+          imageId: image.imageId,
+          path: await getImageUrl(image.path),
+          ...getImageData._doc,
+        };
+
+        return imageInfo;
       })
     );
 
-    console.log("S3 Images ACTION:", await s3Images);
+    return ImagePromises;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-    return s3Images;
+export async function getImage(imageId: string) {
+  try {
+    const imageFromDb = await Image.findOne({ imageId });
+    const image = {
+      imageId: imageFromDb.imageId,
+      selected: imageFromDb.selected,
+      path: await getImageUrl(imageFromDb.path),
+    };
+
+    return image;
   } catch (error) {
     console.log(error);
   }
