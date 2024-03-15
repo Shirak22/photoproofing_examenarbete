@@ -6,6 +6,7 @@ import Client from "@/services/database/models/Client";
 import Thumbnail from "@/services/database/models/Thumbnail";
 import { validateEmail } from "@/utils/helpers";
 import Image from "@/services/database/models/Image";
+import { v4 as uuidv4 } from "uuid";
 export async function createClient(
   prevState: { message: string },
   formData: FormData
@@ -100,8 +101,10 @@ export async function createAlbum(
 
   const album = {
     title: formData.get("title"),
+    albumId: uuidv4(),
     description: formData.get("description"),
     selectedLimit: formData.get("selectedLimit"),
+    noOfSelected: 0,
     proofing: Boolean(formData.get("proofing")),
     clientId: prevState.clientId,
     password: "1234",
@@ -144,10 +147,43 @@ export async function updateSelectedImage(imageId: string, selected: boolean) {
   try {
     const image = await Image.findOne({
       imageId,
-    }).select("selected");
+    })
+      .select("selected")
+      .select("albumId");
+
+    if (await checkSelectedMaxLimitInDB(image.albumId, selected)) {
+      return { message: "Max limit reached" };
+    }
 
     image.selected = selected;
+
     await image.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function checkSelectedMaxLimitInDB(
+  albumId: string,
+  selected: boolean
+) {
+  try {
+    const album = await Album.findOne({ albumId });
+
+    if (album.noOfSelected > 0 && selected === false) {
+      album.noOfSelected -= 1;
+      await album.save();
+      return false;
+    } else if (
+      album.noOfSelected === album.selectedLimit &&
+      selected === true
+    ) {
+      return true;
+    } else {
+      album.noOfSelected += 1;
+      await album.save();
+      return false;
+    }
   } catch (error) {
     console.log(error);
   }

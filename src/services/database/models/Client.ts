@@ -43,11 +43,6 @@ const clientSchema = new Schema<TClient>({
   },
 });
 
-clientSchema.pre("save", function (next) {
-  this.clientId = uuidv4();
-  next();
-});
-
 const Client = models.Client || model("Client", clientSchema);
 
 export default Client;

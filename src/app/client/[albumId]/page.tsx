@@ -11,13 +11,18 @@ export default async function ClientGallery({
   const albumData = await getAlbum(params.albumId);
   const clientData = await getClient(albumData.clientId);
   const albumThumbnails = await getAlbumThumbnails(params.albumId);
-  console.log(albumThumbnails);
+
+  console.log("Albumdata", albumData);
 
   return (
     <div>
       <h1 className="text-4xl">Album {albumData.title}</h1>
       <h1 className="text-4xl">Client {clientData.clientName}</h1>
-      <AlbumGallery albumId={params.albumId} images={albumThumbnails} />
+      <AlbumGallery
+        albumId={params.albumId}
+        images={albumThumbnails}
+        albumData={albumData}
+      />
     </div>
   );
 }

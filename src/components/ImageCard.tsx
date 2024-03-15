@@ -8,6 +8,9 @@ import { useState } from "react";
 export default function ImageCard({
   image,
   albumId,
+  setNoOfSelectedImages,
+  noOfSelectedImages,
+  selectedLimit,
 }: {
   image: {
     path: string;
@@ -15,6 +18,9 @@ export default function ImageCard({
     selected: boolean;
   };
   albumId: string;
+  setNoOfSelectedImages: React.Dispatch<React.SetStateAction<number>>;
+  noOfSelectedImages: number;
+  selectedLimit: number;
 }) {
   const router = useRouter();
   const [selectedImage, setSelectedImage] = useState(image.selected);
@@ -24,8 +30,11 @@ export default function ImageCard({
   };
 
   const handleSelected = () => {
+    if (noOfSelectedImages >= selectedLimit && !selectedImage) {
+      return;
+    }
+    setNoOfSelectedImages((prev) => (selectedImage ? prev - 1 : prev + 1));
     updateSelectedImage(image.imageId, !selectedImage);
-
     setSelectedImage(!selectedImage);
   };
 
