@@ -1,10 +1,7 @@
-import { createClient, getAlbum, getAlbumThumbnails } from "@/app/actions";
-import AlbumGrid from "@/components/AlbumGrid";
+import { getAlbum, getAlbumThumbnails } from "@/app/actions";
 import DashboardLayout from "@/components/DashboardLayout";
-import EmptyState from "@/components/EmptyState";
+import ImageCardDashboard from "@/components/ImageCardDashboard";
 import UploadFiles from "@/components/uploadFiles";
-import Image from "next/image";
-import { useFormState } from "react-dom";
 
 export default async function Album({
   params,
@@ -31,17 +28,8 @@ export default async function Album({
 
       <section className="flex gap-4 flex-wrap">
         {thumbs &&
-          thumbs.map((thumb: any) => (
-            <div className="">
-              <Image
-                key={thumb}
-                src={thumb}
-                alt=""
-                width={200}
-                height={200}
-                className="object-cover h-full rounded-xl"
-              />
-            </div>
+          thumbs.map((image: any) => (
+            <ImageCardDashboard image={image} albumId={params.albumId} />
           ))}
       </section>
     </DashboardLayout>
