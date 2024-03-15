@@ -12,26 +12,17 @@
   }
   ```
 */
-import { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
 import Breadcrumbs from "./Breadcrumbs";
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Documents", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
+  { name: "Dashboard", href: "/dashboard", current: true },
+  { name: "Clients", href: "#", current: false },
+  { name: "Albums", href: "#", current: false },
 ];
 const teams = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
-];
-const userNavigation = [
-  { name: "Your profile", href: "#" },
-  { name: "Sign out", href: "#" },
+  { id: 1, name: "Wedding 2023", href: "#", initial: "W", current: false },
+  { id: 2, name: "Student 2023", href: "#", initial: "S", current: false },
+  { id: 3, name: "Birthday party", href: "#", initial: "B", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -52,14 +43,10 @@ export default function DashboardLayout({
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
-            <div className="flex h-16 shrink-0 items-center">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
-              />
-            </div>
-            <nav className="flex flex-1 flex-col">
+            <h1 className="text-2xl font-semibold text-white mt-14">
+              Photoproofing
+            </h1>
+            <nav className="flex flex-1 flex-col ">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
@@ -82,7 +69,7 @@ export default function DashboardLayout({
                 </li>
                 <li>
                   <div className="text-xs font-semibold leading-6 text-gray-400">
-                    Your teams
+                    Reviewed Albums
                   </div>
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
@@ -160,8 +147,6 @@ export default function DashboardLayout({
                   className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10"
                   aria-hidden="true"
                 />
-
-               
               </div>
             </div>
           </div>

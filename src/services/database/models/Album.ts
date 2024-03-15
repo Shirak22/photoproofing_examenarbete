@@ -32,6 +32,11 @@ const albumSchema = new Schema<TAlbum>({
     type: Number,
     required: true,
   },
+  noOfSelected: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
   images: [
     {
       type: String,
@@ -55,8 +60,7 @@ const albumSchema = new Schema<TAlbum>({
 });
 
 albumSchema.pre("save", function (next) {
-  this.albumId = uuidv4();
-  this.albumUrl = `/client/${this.albumId}`
+  this.albumUrl = `/client/${this.albumId}`;
   next();
 });
 

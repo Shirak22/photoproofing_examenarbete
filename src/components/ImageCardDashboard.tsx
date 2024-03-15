@@ -50,7 +50,7 @@ export default function ImageCardDashboard({
         <p>{(image.size / 1000000).toFixed(2)}MB</p>
         <p>{image.readableTitle}</p>
         <p>{image.extension}</p>
-        <p>{image.createdDate.toLocaleString()}</p>
+        <p>{image.createdDate.toLocaleString("sv")}</p>
       </div>
     </div>
   );
