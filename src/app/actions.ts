@@ -7,6 +7,7 @@ import Thumbnail from "@/services/database/models/Thumbnail";
 import { validateEmail } from "@/utils/helpers";
 import Image from "@/services/database/models/Image";
 import { v4 as uuidv4 } from "uuid";
+import User from "@/services/database/models/User";
 export async function createClient(
   prevState: { message: string },
   formData: FormData
@@ -258,6 +259,20 @@ export async function getImage(imageId: string) {
     };
 
     return image;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getPhotographer(email: string) {
+  try {
+    const photographer = await User.findOne({ email });
+
+    if (!photographer) {
+      throw new Error("Photographer not found in DB");
+    }
+
+    return photographer._doc;
   } catch (error) {
     console.log(error);
   }
