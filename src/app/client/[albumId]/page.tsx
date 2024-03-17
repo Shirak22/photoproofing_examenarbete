@@ -8,20 +8,19 @@ export default async function ClientGallery({
 }) {
   // Hämta album från databasen
   // Hämta bilder från S3
-  const albumData = await getAlbum(params.albumId);
-  const clientData = await getClient(albumData.clientId);
+  const albumInfo = await getAlbum(params.albumId);
+  const clientData = await getClient(albumInfo.clientId);
   const albumThumbnails = await getAlbumThumbnails(params.albumId);
 
-  console.log("Albumdata", albumData);
 
   return (
     <div>
-      <h1 className="text-4xl">Album {albumData.title}</h1>
+      <h1 className="text-4xl">Album {albumInfo.title}</h1>
       <h1 className="text-4xl">Client {clientData.clientName}</h1>
       <AlbumGallery
         albumId={params.albumId}
         images={albumThumbnails}
-        albumData={albumData}
+        albumData={albumInfo}
       />
     </div>
   );

@@ -7,16 +7,19 @@ import Thumbnail from "@/services/database/models/Thumbnail";
 import { validateEmail } from "@/utils/helpers";
 import Image from "@/services/database/models/Image";
 import { v4 as uuidv4 } from "uuid";
+import { log } from "console";
+import { TAlbum, TClient } from "@/core/types";
 export async function createClient(
   prevState: { message: string },
   formData: FormData
 ) {
   const data = formData;
-  const photographerId = "6c8eff3b-0615-43d6-b6bb-7524512e45fd"; // Berat
+  const photographerId = "6c8eff3b-0615-43d6-b6bb-7524512eeab0"; // Berat
   console.log("Formdata:", data.get("name"));
 
   try {
     const client = {
+      clientId: uuidv4(),
       clientName: data.get("name"),
       address: data.get("address"),
       photographerId,
@@ -72,7 +75,9 @@ export async function getAllClients(photographerId: string) {
 
 export async function getClient(clientId: string) {
   try {
-    const client = await Client.findOne({ clientId });
+    const client = await Client.findOne({ clientId })
+      .select("-_id")
+      .select("-__v");
     return client;
   } catch (err) {
     return { message: "Failed!" };
@@ -110,8 +115,6 @@ export async function createAlbum(
     password: "1234",
   };
 
-  console.log("Album:", album);
-
   try {
     console.log(data.get("title"));
     const newAlbum = new Album(album);
@@ -120,7 +123,6 @@ export async function createAlbum(
     return { message: `Album "${data.get("title")}" created` };
   } catch (err) {
     console.log(err);
-
     return { message: "Failed!" };
   }
 }
@@ -136,7 +138,11 @@ export async function getAllAlbums(clientId: string) {
 
 export async function getAlbum(albumId: string) {
   try {
-    const album = await Album.findOne({ albumId });
+    const album = await Album.findOne({ albumId })
+      .select("-_id")
+      .select("-__v");
+    console.log("Album:", album);
+
     return album;
   } catch (err) {
     return { message: "Failed!" };
@@ -258,6 +264,42 @@ export async function getImage(imageId: string) {
     };
 
     return image;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function calcDiskUsage(photographerId: string) {
+  let diskUsage = 0;
+  try {
+    const clients = (await getAllClients(photographerId)) as TClient[];
+    for (const client of clients) {
+      const albums = (await getAllAlbums(client.clientId)) as TAlbum[];
+      for (const album of albums) {
+        const images = await Image.find({ albumId: album.albumId });
+        for (const image of images) {
+          diskUsage += image.size;
+        }
+      }
+    }
+    return diskUsage / 1000000 > 999
+      ? (diskUsage / 1000000000).toFixed(2) + "GB"
+      : (diskUsage / 1000000).toFixed(2) + "MB";
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function calcAlbumDiskUsage(albumId: string) {
+  let diskUsage = 0;
+  try {
+    const images = await Image.find({ albumId });
+    for (const image of images) {
+      diskUsage += image.size;
+    }
+    return diskUsage / 1000000 > 999
+      ? (diskUsage / 1000000000).toFixed(2) + "GB"
+      : (diskUsage / 1000000).toFixed(2) + "MB";
   } catch (error) {
     console.log(error);
   }

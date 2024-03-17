@@ -13,6 +13,7 @@
   ```
 */
 import Breadcrumbs from "./Breadcrumbs";
+import DiskUsage from "./DiskUsage";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", current: true },
@@ -91,6 +92,9 @@ export default function DashboardLayout({
                       </li>
                     ))}
                   </ul>
+                </li>
+                <li className="mt-auto">
+                  <DiskUsage id={"6c8eff3b-0615-43d6-b6bb-7524512eeab0"} />
                 </li>
                 <li className="mt-auto">
                   <a

@@ -7,9 +7,6 @@ export default async function Image({
 }) {
   const { imageId } = params;
   const image = await getImage(imageId);
-
-  console.log(image);
-
   return (
     image && (
       <div>

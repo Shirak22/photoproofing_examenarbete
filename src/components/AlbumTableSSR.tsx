@@ -1,4 +1,4 @@
-import { getAllAlbums } from "@/app/actions";
+import { calcAlbumDiskUsage, getAllAlbums } from "@/app/actions";
 import { TAlbum } from "@/core/types";
 import Link from "next/link";
 import EmptyState from "./EmptyState";
@@ -47,6 +47,9 @@ export default async function AlbumTableSSR({
                 Password
               </th>
               <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                DiskUsage
+              </th>
+              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                 <span className="sr-only">Edit</span>
               </th>
             </tr>
@@ -74,6 +77,9 @@ export default async function AlbumTableSSR({
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {album.password}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    Album size
                   </td>
                   <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                     <a
