@@ -1,15 +1,16 @@
-import { getAllClients } from "@/app/actions";
+import { getAllClients, getPhotographer } from "@/app/actions";
 import { TClient } from "@/core/types";
 import Link from "next/link";
 import EmptyState from "./EmptyState";
+import { getServerSession } from "next-auth";
 
 export default async function ClientTableSSR() {
-  const clients = await getAllClients("6c8eff3b-0615-43d6-b6bb-7524512eeab0");
-
+  const session = await getServerSession();
+  const photographer = await getPhotographer(session?.user?.email as string);
+  const clients = await getAllClients(photographer.userId);
 
   return (
     <>
-
       {clients && Array.isArray(clients) && clients.length > 0 ? (
         <table className="min-w-full divide-y divide-gray-300">
           <thead>
@@ -75,5 +76,4 @@ export default async function ClientTableSSR() {
       )}
     </>
   );
-
 }

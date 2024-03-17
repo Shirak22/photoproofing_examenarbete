@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { connectToDB } from "@/services/database/db";
+import { getServerSession } from "next-auth";
+import SessionProvider from "@/components/SessionProvider";
+import LoginNavBar from "@/components/LoginNavBar";
 connectToDB();
 
 const inter = Inter({ subsets: ["latin"] });
@@ -11,14 +14,21 @@ export const metadata: Metadata = {
   description: "Share your images with your clients and get feedback",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <SessionProvider session={session}>
+          <LoginNavBar /> {/*  Handles login */}
+          {children}
+        </SessionProvider>
+      </body>
     </html>
   );
 }
