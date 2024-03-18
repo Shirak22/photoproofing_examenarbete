@@ -25,7 +25,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider session={session}>
-          <LoginNavBar /> {/*  Handles login */}
+          {/* <LoginNavBar />  Handles login */}
           {children}
         </SessionProvider>
       </body>
