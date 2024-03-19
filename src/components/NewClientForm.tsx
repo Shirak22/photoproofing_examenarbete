@@ -2,9 +2,12 @@
 
 import { useFormState } from "react-dom";
 import { createClient } from "../app/actions";
+import { useSession } from "next-auth/react";
 
 const initialState = {
-  message: "Send us a message",
+  message: "",
+  photographerId: "",
+
 };
 
 export default function NewClientForm() {

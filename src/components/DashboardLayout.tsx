@@ -12,6 +12,7 @@
   }
   ```
 */
+import { getServerSession } from "next-auth";
 import Breadcrumbs from "./Breadcrumbs";
 import DiskUsage from "./DiskUsage";
 
@@ -30,13 +31,15 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const session = await getServerSession();
+  const photographerEmail = session?.user?.email as string;
   return (
     <>
       <div>
@@ -93,9 +96,9 @@ export default function DashboardLayout({
                     ))}
                   </ul>
                 </li>
-                <li className="mt-auto">
-                  <DiskUsage id={"6c8eff3b-0615-43d6-b6bb-7524512eeab0"} />
-                </li>
+                {photographerEmail && <li className="mt-auto">
+                  <DiskUsage email={photographerEmail} />
+                </li>}
                 <li className="mt-auto">
                   <a
                     href="#"
