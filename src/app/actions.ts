@@ -147,7 +147,7 @@ export async function getAlbum(albumId: string) {
       .select("-__v");
     console.log("Album:", album);
 
-    return album;
+    return album._doc;
   } catch (err) {
     return { message: "Failed!" };
   }
@@ -261,6 +261,7 @@ export async function getAlbumThumbnails(albumId: string) {
 export async function getImage(imageId: string) {
   try {
     const imageFromDb = await Image.findOne({ imageId });
+    if (!imageFromDb) return null;
     const image = {
       imageId: imageFromDb.imageId,
       selected: imageFromDb.selected,
