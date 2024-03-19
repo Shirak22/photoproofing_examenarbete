@@ -10,6 +10,11 @@ import { getAlbum, getClient } from "@/app/actions";
 import Jimp from "jimp";
 import Thumbnail from "../database/models/Thumbnail";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { get } from "http";
+import User from "../database/models/User";
+import { revalidatePath, revalidateTag } from "next/cache";
+import path from "path";
+import { text } from "stream/consumers";
 
 //storage usage
 //file input validation on server and client side
@@ -123,13 +128,17 @@ export async function uploadFiles(
           album.title
         }/thumbnails/${imageId}.${file.type.replace("image/", "")}`,
       };
+      let watermarked = fileBuffer;
+      if (album.proofing) {
+        watermarked = await createWatermark(fileBuffer, client.photographerId);
+      }
 
       await pushThumbnailToDatabase(databaseThumbnailInfo);
       await pushImageToDatabase(databaseFileInfo);
 
       await uploadToS3(`${databaseThumbnailInfo.path}`, thumbnailBuffer);
 
-      return await uploadToS3(`${databaseFileInfo.path}`, fileBuffer);
+      return await uploadToS3(`${databaseFileInfo.path}`, watermarked);
     });
 
     const result = await Promise.all(uploadPromises);
@@ -138,37 +147,6 @@ export async function uploadFiles(
     console.log(error);
   }
 }
-
-// export async function createThumbnails(files : File[]){
-//          console.log("create thumbnails FILES", files);
-//         if( files[0].size === 0 ) throw new Error("No files to upload");
-
-//     //create thumbnails
-//     const uploadPromises = Array.from(files).map(async (file) => {
-
-//         //validate file type
-//         checkMimeType(file);
-
-//         const fileBuffer = Buffer.from(await file.arrayBuffer());
-
-//         let resizedImage = await Jimp.read(fileBuffer);
-//          resizedImage.resize(300, Jimp.AUTO).quality(60);
-
-//         const thumbnail = await resizedImage.getBufferAsync(file.type);
-
-//         const updatedFile = new File([thumbnail], file.name, { type: file.type });
-
-//         return updatedFile
-//         //create thumbnail
-//         //upload to s3
-//     });
-
-//     const result = await Promise.all(uploadPromises);
-//     return result;
-//     //upload to s3
-//     //save to database
-//     //return
-// }
 
 export async function createThumbnail(file: File) {
   console.log("create thumbnail FILE", file);
@@ -210,4 +188,24 @@ export async function getImageUrl(filepath: string) {
   } catch (error) {
     console.log("Failed to get image url", error);
   }
+}
+
+export async function createWatermark(buffer: Buffer, photographerId: string) {
+  const user = await User.findOne({ userId: photographerId }); // Use the correct syntax for finding a user
+
+  const companyName = user.companyName; // Get the companyName from the user object
+  const imageBuffer = await Jimp.read(buffer);
+  const waterMarkText = "Proofing version || " + companyName;
+  const font = await Jimp.loadFont("src/core/font/BULLETTO_48_WHITE.fnt");
+  const textWidth = Jimp.measureText(font, waterMarkText);
+  const textHeight = Jimp.measureTextHeight(font, waterMarkText, 1000);
+  const x = imageBuffer.getWidth() / 2 - textWidth / 2;
+  const y = imageBuffer.getHeight() / 2 - textHeight / 2;
+
+  imageBuffer.print(font, x, y, waterMarkText);
+  const watermarkedBuffer = await imageBuffer.getBufferAsync(
+    imageBuffer.getMIME()
+  );
+
+  return watermarkedBuffer;
 }
