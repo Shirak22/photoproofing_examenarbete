@@ -16,8 +16,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal?: React.ReactNode;
 }>) {
   const session = await getServerSession();
 
@@ -27,6 +29,7 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           {/* <LoginNavBar />  Handles login */}
           {children}
+          {modal}
         </SessionProvider>
       </body>
     </html>

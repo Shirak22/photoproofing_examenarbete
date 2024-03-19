@@ -2,20 +2,18 @@
 import Hero from "@/components/client-gallery/Hero";
 import MasonryGrid from "@/components/client-gallery/MasonryGrid";
 import ToggleButton from "@/components/client-gallery/ToggleButton";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ClientGallery() {
-  const router = useRouter();
   const [filtered, setFiltered] = useState(false);
   return (
     <>
       <Hero />
       <section
         id="gallery"
-        className="flex justify-between p-8 bg-neutral-100  sticky z-10 top-0 "
+        className="flex justify-between p-8 h-28 bg-neutral-50  sticky z-10 top-0 "
       >
-        <article>
+        <article className="h-full">
           <h2 className="font-semibold text-2xl">Shirak & Berat</h2>
           <p>Shirak Photography</p>
         </article>
