@@ -1,5 +1,6 @@
-import { getAlbum, getAlbumThumbnails, getClient } from "@/app/actions";
+import { getAlbum, getAlbumThumbnails, getClient, getPhotographer } from "@/app/actions";
 import AlbumGallery from "@/components/AlbumGallery";
+import { useSession } from "next-auth/react";
 
 export default async function ClientGallery({
   params,
@@ -8,6 +9,7 @@ export default async function ClientGallery({
 }) {
   // Hämta album från databasen
   // Hämta bilder från S3
+
   const albumInfo = await getAlbum(params.albumId);
   const clientData = await getClient(albumInfo.clientId);
   const albumThumbnails = await getAlbumThumbnails(params.albumId);

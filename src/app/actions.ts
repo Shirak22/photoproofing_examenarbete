@@ -8,45 +8,51 @@ import { validateEmail } from "@/utils/helpers";
 import Image from "@/services/database/models/Image";
 import { v4 as uuidv4 } from "uuid";
 import User from "@/services/database/models/User";
-import { log } from "console";
 import { TAlbum, TClient } from "@/core/types";
+import { getServerSession } from "next-auth";
+import crypto from "crypto";
+
 export async function createClient(
   prevState: { message: string },
   formData: FormData
 ) {
-  const data = formData;
-  const photographerId = "6c8eff3b-0615-43d6-b6bb-7524512eeab0"; // Berat
-  console.log("Formdata:", data.get("name"));
+  const getUser = await getServerSession();
+  const photographer = await User.findOne({ email: getUser?.user?.email });
+
+  // checks if the user is authenticated
+  if (!getUser) return { message: "The user is not authenticated" };
+  if (!photographer) return { message: "Photographer not found" };
+  const photographerId = photographer.userId;
 
   try {
     const client = {
       clientId: uuidv4(),
-      clientName: data.get("name"),
-      address: data.get("address"),
+      clientName: formData.get("name"),
+      address: formData.get("address"),
       photographerId,
       contact: {
-        email: data.get("email"),
-        phone: data.get("phone"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
       },
     };
-
-    console.log("Client:", client);
 
     const newClient = new Client(client);
 
     // Check if client email already exists on this photographers clients
     // This does not apply to other photographers, meaning the same email can be used by different photographers
     const clientEmailExists = await Client.findOne({
-      "contact.email": data.get("email"),
+      "contact.email": formData.get("email"),
       photographerId: photographerId,
     });
 
     if (clientEmailExists) {
       return {
-        message: `The client with email '${data.get("email")}' already exists`,
+        message: `The client with email '${formData.get(
+          "email"
+        )}' already exists`,
       };
     }
-    const emailIsValid = validateEmail(data.get("email") as string);
+    const emailIsValid = validateEmail(formData.get("email") as string);
 
     if (!emailIsValid) {
       return { message: "Invalid email!" };
@@ -55,7 +61,7 @@ export async function createClient(
     await newClient.save();
 
     return {
-      message: `The client '${data.get(
+      message: `The client '${formData.get(
         "name"
       )}' has been created successfully `,
     };
@@ -103,8 +109,6 @@ export async function createAlbum(
   prevState: { message: string; clientId: string },
   formData: FormData
 ) {
-  const data = formData;
-
   const album = {
     title: formData.get("title"),
     albumId: uuidv4(),
@@ -113,15 +117,14 @@ export async function createAlbum(
     noOfSelected: 0,
     proofing: Boolean(formData.get("proofing")),
     clientId: prevState.clientId,
-    password: "1234",
+    password: crypto.randomBytes(4).toString("hex"),
   };
 
   try {
-    console.log(data.get("title"));
     const newAlbum = new Album(album);
     await newAlbum.save();
 
-    return { message: `Album "${data.get("title")}" created` };
+    return { message: `Album "${formData.get("title")}" created` };
   } catch (err) {
     console.log(err);
     return { message: "Failed!" };
@@ -275,7 +278,7 @@ export async function getPhotographer(email: string) {
     const photographer = await User.findOne({ email });
 
     if (!photographer) {
-      throw new Error("Photographer not found in DB");
+      return { message: "Photographer not found in DB" };
     }
 
     return photographer._doc;
@@ -297,9 +300,19 @@ export async function calcDiskUsage(photographerId: string) {
         }
       }
     }
-    return diskUsage / 1000000 > 999
-      ? (diskUsage / 1000000000).toFixed(2) + "GB"
-      : (diskUsage / 1000000).toFixed(2) + "MB";
+    const photographer = await User.findOne({ userId: photographerId });
+    const diskUsageinMB = diskUsage / 1000000;
+    const diskUsageInMbOrGb =
+      diskUsageinMB > 999
+        ? (diskUsage / 1000000000).toFixed(2) + "GB"
+        : diskUsageinMB.toFixed(2) + "MB";
+
+    if (photographer.usedStorage !== diskUsageinMB) {
+      photographer.usedStorage = diskUsageinMB; // in MB
+      await photographer.save();
+    }
+
+    return diskUsageInMbOrGb;
   } catch (error) {
     console.log(error);
   }
