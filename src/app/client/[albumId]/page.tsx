@@ -1,8 +1,8 @@
-import { getAlbum, getAlbumThumbnails, getClient, getPhotographer } from "@/app/actions";
-import Client from "@/app/dashboard/[clientId]/page";
+import { getAlbum, getAlbumThumbnails, getClient } from "@/app/actions";
 import AlbumGallery from "@/components/AlbumGallery";
-import ClientPasswordInput from "@/components/clientPasswordInput";
-import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
+
 
 export default async function ClientGallery({
   params,
@@ -11,16 +11,17 @@ export default async function ClientGallery({
 }) {
   // Hämta album från databasen
   // Hämta bilder från S3
-
-
+  
+  
   const albumInfo = await getAlbum(params.albumId);
   const clientData = await getClient(albumInfo.clientId);
   const albumThumbnails = await getAlbumThumbnails(params.albumId);
 
   if (!albumInfo || !clientData || !albumThumbnails) return notFound();
-  const isLogged = false;
+  
+  const session = await getServerSession();
+  if (!session || session?.user?.name !== params.albumId) return redirect(`/client/login?albumId=${params.albumId}`);  
   return (
-    isLogged ? (
       <div>
         <h1 className="text-4xl">Album {albumInfo?.title}</h1>
         <h1 className="text-4xl">Client {clientData?.clientName}</h1>
@@ -30,9 +31,8 @@ export default async function ClientGallery({
           albumData={albumInfo}
         />
       </div>
-    ) : (
-      <ClientPasswordInput />
-    )
-
   );
+
+
+
 }

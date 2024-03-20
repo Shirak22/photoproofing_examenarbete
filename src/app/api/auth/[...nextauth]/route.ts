@@ -2,12 +2,13 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getPhotographer } from "@/app/actions";
+import { getAlbum, getPhotographer } from "@/app/actions";
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
+      id: "Dashboard Login",
       // Display name on the sign in form (e.g. "Sign in with [name]")
       name: "Email",
       // `credentials` is used to generate a form on the sign in page.
@@ -45,17 +46,44 @@ export const authOptions = {
         return null;
       },
     }),
+    CredentialsProvider({
+      // New credentials provider for password-only authentication
+      id: "Client Login",
+      name: "Client Password",
+
+      credentials: {
+        password: { label: "Password", type: "password" },
+        albumId: { label: "Album ID", type: "text" }, 
+      },
+  
+      async authorize(credentials, req) {
+        const {albumId, password } = credentials as {
+          password: string;
+          albumId: string;
+        };
+
+        // Get the album from the database
+        const album = await getAlbum(albumId);
+        if(album && password === album.password){
+          return {id: albumId, name: albumId};
+        }else {
+          return null;
+        }
+      },
+    }),
+    
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
   ],
   pages: {
-    signIn: "/login",
-    // signOut: "/signout",
-    // error: "/login-error",
+     signIn: "/login",
+     //signOut: "/signout",
+      // error: "/login-error",
     // newUser: "/new-user",
   },
+  
 };
 
 export const handler = NextAuth(authOptions);

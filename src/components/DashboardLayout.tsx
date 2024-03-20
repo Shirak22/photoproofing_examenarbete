@@ -15,6 +15,7 @@
 import { getServerSession } from "next-auth";
 import Breadcrumbs from "./Breadcrumbs";
 import DiskUsage from "./DiskUsage";
+import { redirect  } from "next/navigation";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", current: true },
@@ -40,6 +41,12 @@ export default async function DashboardLayout({
 
   const session = await getServerSession();
   const photographerEmail = session?.user?.email as string;
+
+  if (!photographerEmail) {
+    redirect("/login");
+  }
+
+
   return (
     <>
       <div>

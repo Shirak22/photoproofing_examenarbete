@@ -1,11 +1,11 @@
 import { getImage } from "@/app/actions";
-import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
 export default async function Image({ params, }: { params: { imageId: string } }) {
+  
   const { imageId } = params;
-
-  const image = await getImage(imageId);
-  if (!image) return notFound();
+  const image = await getImage(imageId); 
 
   return (
     image && (
