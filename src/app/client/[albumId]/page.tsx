@@ -1,29 +1,27 @@
-import { getAlbum, getAlbumThumbnails, getClient, getPhotographer } from "@/app/actions";
-import AlbumGallery from "@/components/AlbumGallery";
-import { useSession } from "next-auth/react";
+import { getAlbum, getAlbumThumbnails, getAllImages } from "@/app/actions";
+import Hero from "@/components/client-gallery/Hero";
+import MasonryGrid from "@/components/client-gallery/MasonryGrid";
+import SelectionBar from "@/components/client-gallery/SelectionBar";
 
 export default async function ClientGallery({
   params,
 }: {
   params: { albumId: string };
 }) {
-  // Hämta album från databasen
-  // Hämta bilder från S3
-
-  const albumInfo = await getAlbum(params.albumId);
-  const clientData = await getClient(albumInfo.clientId);
-  const albumThumbnails = await getAlbumThumbnails(params.albumId);
-
+  const thumbs = await getAlbumThumbnails(params.albumId);
+  const album = await getAlbum(params.albumId);
 
   return (
-    <div>
-      <h1 className="text-4xl">Album {albumInfo.title}</h1>
-      <h1 className="text-4xl">Client {clientData.clientName}</h1>
-      <AlbumGallery
-        albumId={params.albumId}
-        images={albumThumbnails}
-        albumData={albumInfo}
+    <>
+      <Hero title={album.title} description={album.description} />
+      <SelectionBar
+        title={album.title}
+        description={album.description}
+        selectedLimit={album.selectedLimit}
+        images={thumbs}
+        className="flex justify-between w-full p-8 h-28 bg-neutral-50  sticky z-10 top-0 left-0 "
       />
-    </div>
+      <MasonryGrid thumbnails={thumbs} />
+    </>
   );
 }

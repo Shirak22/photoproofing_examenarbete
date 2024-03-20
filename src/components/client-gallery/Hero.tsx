@@ -1,4 +1,10 @@
-export default function Hero() {
+export default function Hero({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   return (
     <div className="relative h-screen flex justify-center align-middle">
       <img
@@ -9,11 +15,9 @@ export default function Hero() {
       <div className="m-auto  max-w-2xl py-32 sm:py-48 lg:py-56">
         <div className="text-center">
           <h1 className="text-2xl font-bold  tracking-widest text-white sm:text-5xl uppercase">
-            Shirak & Berat
+            {title}
           </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-            JUNE 30TH, 2024
-          </p>
+          <p className="mt-6 text-lg leading-8 text-gray-300">{description}</p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <a
               href="#gallery"
