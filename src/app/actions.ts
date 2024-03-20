@@ -265,6 +265,7 @@ export async function getImage(imageId: string) {
       imageId: imageFromDb.imageId,
       selected: imageFromDb.selected,
       path: await getImageUrl(imageFromDb.path),
+      albumId: imageFromDb.albumId,
     };
 
     return image;
@@ -328,6 +329,18 @@ export async function calcAlbumDiskUsage(albumId: string) {
     return diskUsage / 1000000 > 999
       ? (diskUsage / 1000000000).toFixed(2) + "GB"
       : (diskUsage / 1000000).toFixed(2) + "MB";
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAllImages(albumId: string) {
+  try {
+    const images = await Image.find({ albumId })
+      .select("-path")
+      .select("-_id")
+      .select("-__v");
+    return images;
   } catch (error) {
     console.log(error);
   }
