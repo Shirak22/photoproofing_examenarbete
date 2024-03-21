@@ -7,7 +7,12 @@ export default function SlideshowNavButtons({
   image,
   albumImages,
 }: {
-  image: any;
+  image: {
+    imageId: string;
+    selected: boolean;
+    path: string | undefined;
+    albumId: string;
+  };
   albumImages: any;
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(
@@ -59,6 +64,8 @@ export default function SlideshowNavButtons({
       handleNextClick();
     }
   };
+
+  // Add event listener for keyboard navigation
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => {

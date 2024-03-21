@@ -1,7 +1,6 @@
-import { getAlbum, getAlbumThumbnails, getAllImages } from "@/app/actions";
+import { getAlbum, getAlbumThumbnails } from "@/app/actions";
+import GallerySection from "@/components/client-gallery/GallerySection";
 import Hero from "@/components/client-gallery/Hero";
-import MasonryGrid from "@/components/client-gallery/MasonryGrid";
-import SelectionBar from "@/components/client-gallery/SelectionBar";
 
 export default async function ClientGallery({
   params,
@@ -12,16 +11,9 @@ export default async function ClientGallery({
   const album = await getAlbum(params.albumId);
 
   return (
-    <>
+    <div>
       <Hero title={album.title} description={album.description} />
-      <SelectionBar
-        title={album.title}
-        description={album.description}
-        selectedLimit={album.selectedLimit}
-        images={thumbs}
-        className="flex justify-between w-full p-8 h-28 bg-neutral-50  sticky z-10 top-0 left-0 "
-      />
-      <MasonryGrid thumbnails={thumbs} />
-    </>
+      <GallerySection album={album} thumbs={thumbs || []} />
+    </div>
   );
 }

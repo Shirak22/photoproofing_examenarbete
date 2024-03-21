@@ -1,14 +1,14 @@
-import { getAllImages, getImage } from "@/app/actions";
-import LikeButton from "@/components/client-gallery/LikeButton";
+import { getAlbum, getAllImages, getImage } from "@/app/actions";
 import Modal from "@/components/client-gallery/Modal";
-import ModalContent from "@/components/client-gallery/ModalContent";
+import ModalImage from "@/components/client-gallery/ModalImage";
 import SelectionBar from "@/components/client-gallery/SelectionBar";
 import SlideshowNavButtons from "@/components/client-gallery/SlideshowNavButtons";
+import { notFound } from "next/navigation";
 
 export default async function ClientImageIntercept({
   params,
 }: {
-  params: { imageId: string };
+  params: { imageId: string; albumId: string };
 }) {
   // TODO - The images order go down in column. They should go in a row.
   // TODO - Bug - The image url does not change when modal closes.
@@ -17,15 +17,21 @@ export default async function ClientImageIntercept({
 
   const image = await getImage(params.imageId);
   const albumImages = await getAllImages(image?.albumId);
+  const album = await getAlbum(params.albumId);
+  const selectedLimit = album.selectedLimit;
+
+  if (!image || !album || !albumImages) {
+    return notFound();
+  }
 
   return (
     <Modal>
       <SelectionBar
-        selectedLimit={25}
-        images={albumImages}
+        modal={true}
+        album={album}
         className="flex justify-end w-full p-8 h-28 bg-neutral-50 z-10 top-0 left-0 absolute"
       />
-      <ModalContent image={image} />
+      <ModalImage image={image} selectedLimit={selectedLimit} />
       <SlideshowNavButtons image={image} albumImages={albumImages} />
     </Modal>
   );

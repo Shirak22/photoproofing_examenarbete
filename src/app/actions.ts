@@ -147,7 +147,7 @@ export async function getAlbum(albumId: string) {
       .select("-__v");
     console.log("Album:", album);
 
-    return album;
+    return album._doc;
   } catch (err) {
     return { message: "Failed!" };
   }
