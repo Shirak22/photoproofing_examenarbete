@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 
 const initialState = {
   message: "",
-  photographerId: "",
 
 };
 

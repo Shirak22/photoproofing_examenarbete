@@ -22,7 +22,7 @@ export default async function RootLayout({
   modal?: React.ReactNode;
 }>) {
   const session = await getServerSession();
-
+  
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -31,7 +31,6 @@ export default async function RootLayout({
             {children}
             {modal}
           </GlobalContextProvider>
-          {/* <LoginNavBar />  Handles login */}
         </SessionProvider>
       </body>
     </html>

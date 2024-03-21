@@ -1,4 +1,6 @@
-import { getAllImages, getImage } from "@/app/actions";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
+import { getImage } from "@/app/actions";
 import LikeButton from "@/components/client-gallery/LikeButton";
 import Link from "next/link";
 
@@ -8,7 +10,6 @@ export default async function ClientImage({
   params: { imageId: string };
 }) {
   const image = await getImage(params.imageId);
-  const albumImages = await getAllImages(image?.albumId);
 
   return (
     <>

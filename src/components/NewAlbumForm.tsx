@@ -10,7 +10,7 @@ export default function NewAlbumForm({ clientId }: { clientId: string }) {
   };
 
   const [response, setForm] = useFormState(
-    async (state: any, formData: any) => {
+     (state: any, formData: any) => {
       // Adjusted to match expected signature
       // Directly calling createAlbum with both state and formData
       return createAlbum(state, formData);
