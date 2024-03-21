@@ -1,38 +1,47 @@
 "use client";
+
+import { TAlbum } from "@/core/types";
 import ToggleButton from "./ToggleButton";
-import { useState } from "react";
+import { useGlobalContext } from "@/app/context/store";
+import { useEffect } from "react";
 
 export default function SelectionBar({
-  title,
-  description,
-  selectedLimit,
-  images,
+  modal,
+  album,
   className,
 }: {
-  title?: string;
-  description?: string;
-  selectedLimit: number;
-  images?: any;
+  modal?: boolean;
+  album: TAlbum;
   className?: string;
 }) {
-  const noOfSelectedImages = images.filter(
-    (image: any) => image.selected
-  ).length;
-  const [selected, setSelected] = useState<number[]>(noOfSelectedImages);
+  const { noOfSelectedImages, setNoOfSelectedImages } = useGlobalContext();
+
+  // Update the context to match the album's selected images from DB
+  useEffect(() => {
+    setNoOfSelectedImages(album.noOfSelected);
+  }, [album.noOfSelected]);
 
   return (
-    <section id="gallery" className={className}>
-      <article className="h-full">
-        <h2 className="font-semibold text-2xl">{title}</h2>
-        <p>{description}</p>
-      </article>
+    <section
+      onClick={(e) => e.stopPropagation()}
+      id="gallery"
+      className={className}
+    >
+      {!modal && (
+        <article className="h-full">
+          <h2 className="font-semibold text-2xl">{album.title}</h2>
+          <p>{album.description}</p>
+        </article>
+      )}
       <article className="flex gap-4 align-middle">
-        <div className="flex gap-4">
-          <p className="m-auto">Filter Selected</p>
-          <ToggleButton />
-        </div>
+        {!modal && (
+          <div className="flex gap-4">
+            <p className="m-auto">Filter Selected</p>
+            <ToggleButton />
+          </div>
+        )}
         <p className="m-auto">
-          {selected}/{selectedLimit}
+          {noOfSelectedImages}/{album.selectedLimit}
         </p>
         <button className=" bg-neutral-800 px-6  py-3 ml-8 text-white text-sm font-semibold uppercase rounded-full hover:cursor-pointer hover:bg-neutral-700 transition-all duration-240">
           Confirm selection
