@@ -5,6 +5,7 @@ import { connectToDB } from "@/services/database/db";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/SessionProvider";
 import { GlobalContextProvider } from "./context/store";
+import LoginNavBar from "@/components/LoginNavBar";
 connectToDB();
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,12 +23,13 @@ export default async function RootLayout({
   modal?: React.ReactNode;
 }>) {
   const session = await getServerSession();
-  
+
   return (
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider session={session}>
           <GlobalContextProvider>
+            <LoginNavBar />
             {children}
             {modal}
           </GlobalContextProvider>
