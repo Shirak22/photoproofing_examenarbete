@@ -17,16 +17,17 @@ export default async function Client({
 
   if (client.photographerId !== userId) {
     return (
-      <DashboardLayout>
+      <>
         <h1 className="text-5xl font-bold my-20 mb-40">
           You don't have access to this client
         </h1>
-      </DashboardLayout>
+      </>
     );
   }
 
   return (
-    <DashboardLayout>
+    <>
+    
       {client &&
         <h1 className="text-5xl font-bold my-20 mb-40">
           {client.clientName}
@@ -36,6 +37,7 @@ export default async function Client({
       {/* <TableHandler type="album" /> */}
       <AlbumTableSSR clientId={params.clientId} />
       <NewAlbumForm clientId={params.clientId} />
-    </DashboardLayout>
+
+    </>
   );
 }

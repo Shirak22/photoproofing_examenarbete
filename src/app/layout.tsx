@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/SessionProvider";
 import { GlobalContextProvider } from "./context/store";
 import LoginNavBar from "@/components/LoginNavBar";
+import DashboardLayout from "@/components/DashboardLayout";
 connectToDB();
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,9 +30,11 @@ export default async function RootLayout({
       <body className={inter.className}>
         <SessionProvider session={session}>
           <GlobalContextProvider>
-            <LoginNavBar />
+          <LoginNavBar />
+            <DashboardLayout>
             {children}
             {modal}
+            </DashboardLayout>
           </GlobalContextProvider>
         </SessionProvider>
       </body>

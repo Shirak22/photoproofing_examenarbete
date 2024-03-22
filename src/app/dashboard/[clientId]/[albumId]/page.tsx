@@ -1,8 +1,8 @@
-import { getAlbum, getAlbumThumbnails, getClient, getPhotographer } from "@/app/actions";
-import DashboardLayout from "@/components/DashboardLayout";
+import { getAlbum, getAlbumThumbnails} from "@/app/actions";
 import ImageCardDashboard from "@/components/ImageCardDashboard";
 import UploadFiles from "@/components/uploadFiles";
-import { getServerSession } from "next-auth";
+import H1 from "@/core/typography/H1";
+import { notFound } from "next/navigation";
 
 export default async function Album({
   params,
@@ -10,36 +10,24 @@ export default async function Album({
   params: {
     clientId: string;
     albumId: string;
-  };
+  },
 }) {
-  const session = await getServerSession();
-  const album = await getAlbum(params.albumId);
-  const thumbs = await getAlbumThumbnails(params.albumId);
-  const { photographerId } = await getClient(params.clientId);
-  const { userId } = await getPhotographer(session?.user?.email as string);
 
-  if (photographerId !== userId) {
-    return (
-      <DashboardLayout>
-        <h1 className="text-5xl font-bold my-20 mb-40">
-          You don't have access to this album
-        </h1>
-      </DashboardLayout>
-    );
-  }
+  const thumbs = await getAlbumThumbnails(params.albumId);
+  
+  if(!thumbs) return <h1>No files found</h1>;
 
   return (
-    <DashboardLayout>
-      <h1 className="text-5xl font-bold">{album.title}</h1>
-
-      <UploadFiles albumId={params.albumId} />
-
+    <div>
+        {/* //if you want to style you can add styling prop to H1 */}
+  
+      
       <section className="flex gap-4 flex-wrap">
         {thumbs &&
           thumbs.map((image: any) => (
             <ImageCardDashboard image={image} albumId={params.albumId} />
           ))}
       </section>
-    </DashboardLayout>
+    </div>
   );
 }
