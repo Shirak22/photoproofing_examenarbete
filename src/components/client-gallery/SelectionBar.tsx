@@ -1,9 +1,10 @@
 "use client";
 
-import { TAlbum } from "@/core/types";
+import { TAlbum, TImage, TThumbnail } from "@/core/types";
 import ToggleButton from "./ToggleButton";
 import { useGlobalContext } from "@/app/context/store";
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function SelectionBar({
   modal,
@@ -19,7 +20,7 @@ export default function SelectionBar({
   // Update the context to match the album's selected images from DB
   useEffect(() => {
     setNoOfSelectedImages(album.noOfSelected);
-  }, [album.noOfSelected]);
+  }, []);
 
   return (
     <section
@@ -37,15 +38,18 @@ export default function SelectionBar({
         {!modal && (
           <div className="flex gap-4">
             <p className="m-auto">Filter Selected</p>
-            <ToggleButton />
+            <ToggleButton albumId={album.albumId} />
           </div>
         )}
         <p className="m-auto">
           {noOfSelectedImages}/{album.selectedLimit}
         </p>
-        <button className=" bg-neutral-800 px-6  py-3 ml-8 text-white text-sm font-semibold uppercase rounded-full hover:cursor-pointer hover:bg-neutral-700 transition-all duration-240">
+        <Link
+          href={`/client/${album.albumId}/confirm`}
+          className=" bg-neutral-800 px-6  py-3 ml-8 text-white text-sm font-semibold uppercase rounded-full hover:cursor-pointer hover:bg-neutral-700 transition-all duration-240"
+        >
           Confirm selection
-        </button>
+        </Link>
       </article>
     </section>
   );

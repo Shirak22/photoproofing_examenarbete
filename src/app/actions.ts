@@ -12,25 +12,21 @@ import { TAlbum, TClient } from "@/core/types";
 import { getServerSession } from "next-auth";
 import crypto from "crypto";
 
-
-export  async function clientPasswordCheck(
-  prevState: { message: string},
+export async function clientPasswordCheck(
+  prevState: { message: string },
   formData: FormData
 ) {
   const client = {
     albumId: formData.get("albumId"),
-    password:  formData.get("password"),
-  }
-
-
+    password: formData.get("password"),
+  };
 
   try {
-    
     const album = await Album.findOne({ albumId: client.albumId });
     if (album.password !== client.password) {
       return { message: "Password is incorrect" };
     }
-    
+
     return { message: "Password is correct" };
   } catch (error) {
     console.log(error);
@@ -292,7 +288,6 @@ export async function getImage(imageId: string) {
       albumId: imageFromDb.albumId,
       selected: imageFromDb.selected,
       path: await getImageUrl(imageFromDb.path),
-      albumId: imageFromDb.albumId,
     };
 
     return image;

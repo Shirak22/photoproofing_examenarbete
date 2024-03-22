@@ -22,7 +22,6 @@ export default async function ClientImage({
         </Link>
 
         <div className="relative  w-fit mx-auto h-full rounded-lg ">
-          <LikeButton image={image} />
           <img
             src={image?.path}
             alt=""

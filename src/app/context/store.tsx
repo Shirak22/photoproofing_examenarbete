@@ -6,19 +6,24 @@ import {
   Dispatch,
   SetStateAction,
   useState,
-  useEffect,
 } from "react";
-import { getAlbum } from "../actions";
+import { TImage, TThumbnail } from "@/core/types";
 
 interface TContextProps {
   noOfSelectedImages: number;
   setNoOfSelectedImages: Dispatch<SetStateAction<number>>;
+  selectedImages: any[];
+  setSelectedImages: Dispatch<SetStateAction<TImage[]>>;
 }
 
 const GlobalContext = createContext<TContextProps>({
   noOfSelectedImages: 0,
   setNoOfSelectedImages: (num): void => {
     num;
+  },
+  selectedImages: [{}], // Default value
+  setSelectedImages: (images): void => {
+    images;
   },
 });
 
@@ -28,10 +33,16 @@ export const GlobalContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [noOfSelectedImages, setNoOfSelectedImages] = useState<number>(0);
+  const [selectedImages, setSelectedImages] = useState<TImage[]>([]);
 
   return (
     <GlobalContext.Provider
-      value={{ noOfSelectedImages, setNoOfSelectedImages }}
+      value={{
+        noOfSelectedImages,
+        setNoOfSelectedImages,
+        selectedImages,
+        setSelectedImages,
+      }}
     >
       {children}
     </GlobalContext.Provider>

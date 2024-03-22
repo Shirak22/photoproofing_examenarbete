@@ -18,7 +18,6 @@ export default async function ClientImageIntercept({
   const image = await getImage(params.imageId);
   const albumImages = await getAllImages(image?.albumId);
   const album = await getAlbum(params.albumId);
-  const selectedLimit = album.selectedLimit;
 
   if (!image || !album || !albumImages) {
     return notFound();
@@ -31,7 +30,7 @@ export default async function ClientImageIntercept({
         album={album}
         className="flex justify-end w-full p-8 h-28 bg-neutral-50 z-10 top-0 left-0 absolute"
       />
-      <ModalImage image={image} selectedLimit={selectedLimit} />
+      <ModalImage image={image} selectedLimit={album.selectedLimit} />
       <SlideshowNavButtons image={image} albumImages={albumImages} />
     </Modal>
   );

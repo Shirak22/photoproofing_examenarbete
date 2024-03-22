@@ -48,12 +48,14 @@ export default function SlideshowNavButtons({
   const router = useRouter();
   const handlePrevClick = () => {
     // When hitting the prev button on the first image, it goes to the last image
-    router.push(`/client/${image.albumId}/${getIdOfPrevImage()}`);
+    router.replace(`/client/${image.albumId}/${getIdOfPrevImage()}`);
+    // Does not add modal navigation to history stack
   };
 
   const handleNextClick = () => {
     // When hitting the next button on the last image, it goes to the first image
-    router.push(`/client/${image.albumId}/${getIdOfNextImage()}`);
+    router.replace(`/client/${image.albumId}/${getIdOfNextImage()}`);
+    // Does not add modal navigation to history stack
   };
 
   // Keyboard left and right arrow keys can be used to navigate through the images

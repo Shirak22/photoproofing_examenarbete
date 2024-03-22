@@ -34,7 +34,7 @@ export default function ImageCardClient({
     <div
       onMouseEnter={() => setHovering(image.imageId)}
       onMouseLeave={() => setHovering(0)}
-      className="relative"
+      className="relative bg-white"
     >
       {hovering === image.imageId && (
         <div

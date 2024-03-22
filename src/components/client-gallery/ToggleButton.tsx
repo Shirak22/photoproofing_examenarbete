@@ -1,14 +1,33 @@
 "use client";
 
-import { useState } from "react";
 import { Switch } from "@headlessui/react";
+import { useGlobalContext } from "@/app/context/store";
+import { TImage } from "@/core/types";
+import { useEffect, useState } from "react";
+import { getAlbumThumbnails } from "@/app/actions";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ToggleButton() {
+export default function ToggleButton({ albumId }: { albumId: string }) {
   const [enabled, setEnabled] = useState(false);
+  const { noOfSelectedImages, setSelectedImages } = useGlobalContext();
+
+  useEffect(() => {
+    const updateSelectedImages = async () => {
+      const imagesFromDb = await getAlbumThumbnails(albumId);
+      if (enabled) {
+        const selectedImagesFromDB = imagesFromDb?.filter(
+          (image) => image.selected
+        );
+        setSelectedImages(selectedImagesFromDB || []);
+      } else {
+        setSelectedImages(imagesFromDb || []);
+      }
+    };
+    updateSelectedImages();
+  }, [enabled]);
 
   return (
     <Switch
