@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   description: "Share your images with your clients and get feedback",
 };
 
+
+
 export default async function RootLayout({
   children,
   modal,
@@ -23,6 +25,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   modal?: React.ReactNode;
 }>) {
+
   const session = await getServerSession();
 
   return (
@@ -30,11 +33,9 @@ export default async function RootLayout({
       <body className={inter.className}>
         <SessionProvider session={session}>
           <GlobalContextProvider>
-          <LoginNavBar />
-            <DashboardLayout>
-            {children}
+            <LoginNavBar />
+              {children}
             {modal}
-            </DashboardLayout>
           </GlobalContextProvider>
         </SessionProvider>
       </body>

@@ -22,7 +22,7 @@ export default async function Album({
         {/* //if you want to style you can add styling prop to H1 */}
   
       
-      <section className="flex gap-4 flex-wrap">
+      <section className="flex gap-2 justify-between flex-wrap h-full">
         {thumbs &&
           thumbs.map((image: any) => (
             <ImageCardDashboard image={image} albumId={params.albumId} />

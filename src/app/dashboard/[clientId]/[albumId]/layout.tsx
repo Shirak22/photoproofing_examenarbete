@@ -27,11 +27,14 @@ export default async function albumLayout(
 
     return (
       <div>
-        <Suspense fallback={<Loading />}>
-          <H1 styling="text-slate-700">{album?.title}</H1>
+        
+          <h1 className="text-5xl text-slate-700 mb-4 ">{album?.title}</h1>
           <UploadFiles albumId={params.albumId} />
+
+          <Suspense fallback={<Loading />}>
           {children}
-        </Suspense>
+          </Suspense>
+        
       </div>
     );
 }
