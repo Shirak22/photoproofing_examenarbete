@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -32,7 +31,6 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   return (
     open && (
       <div
-        // href={`/client/${albumId}`}
         onClick={handleModalClose}
         className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-95  z-20"
       >

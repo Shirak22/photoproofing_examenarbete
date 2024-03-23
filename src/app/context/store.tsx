@@ -13,7 +13,9 @@ interface TContextProps {
   noOfSelectedImages: number;
   setNoOfSelectedImages: Dispatch<SetStateAction<number>>;
   selectedImages: any[];
-  setSelectedImages: Dispatch<SetStateAction<TImage[]>>;
+  setSelectedImages: Dispatch<SetStateAction<TThumbnail[]>>;
+  imageArray: TImage[];
+  setImageArray: Dispatch<SetStateAction<TImage[]>>;
 }
 
 const GlobalContext = createContext<TContextProps>({
@@ -21,8 +23,12 @@ const GlobalContext = createContext<TContextProps>({
   setNoOfSelectedImages: (num): void => {
     num;
   },
-  selectedImages: [{}], // Default value
+  selectedImages: [{}],
   setSelectedImages: (images): void => {
+    images;
+  },
+  imageArray: [],
+  setImageArray: (images): void => {
     images;
   },
 });
@@ -33,7 +39,8 @@ export const GlobalContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [noOfSelectedImages, setNoOfSelectedImages] = useState<number>(0);
-  const [selectedImages, setSelectedImages] = useState<TImage[]>([]);
+  const [selectedImages, setSelectedImages] = useState<TThumbnail[]>([]);
+  const [imageArray, setImageArray] = useState<TImage[]>([]);
 
   return (
     <GlobalContext.Provider
@@ -42,6 +49,8 @@ export const GlobalContextProvider = ({
         setNoOfSelectedImages,
         selectedImages,
         setSelectedImages,
+        imageArray,
+        setImageArray,
       }}
     >
       {children}

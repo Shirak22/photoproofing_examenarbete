@@ -1,11 +1,11 @@
 "use client";
 
+import { useGlobalContext } from "@/app/context/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SlideshowNavButtons({
   image,
-  albumImages,
 }: {
   image: {
     imageId: string;
@@ -13,33 +13,33 @@ export default function SlideshowNavButtons({
     path: string | undefined;
     albumId: string;
   };
-  albumImages: any;
 }) {
+  const { selectedImages } = useGlobalContext();
   const [currentImageIndex, setCurrentImageIndex] = useState(
-    albumImages.findIndex(
+    selectedImages.findIndex(
       (imageItem: any) => imageItem.imageId === image.imageId
     )
   );
 
   const getIdOfNextImage = () => {
-    if (currentImageIndex === albumImages.length - 1) {
-      return albumImages[0].imageId;
+    if (currentImageIndex === selectedImages.length - 1) {
+      return selectedImages[0].imageId;
     } else {
-      return albumImages[currentImageIndex + 1].imageId;
+      return selectedImages[currentImageIndex + 1].imageId;
     }
   };
 
   const getIdOfPrevImage = () => {
     if (currentImageIndex === 0) {
-      return albumImages[albumImages.length - 1].imageId;
+      return selectedImages[selectedImages.length - 1].imageId;
     } else {
-      return albumImages[currentImageIndex - 1].imageId;
+      return selectedImages[currentImageIndex - 1].imageId;
     }
   };
 
   useEffect(() => {
     setCurrentImageIndex(
-      albumImages.findIndex(
+      selectedImages.findIndex(
         (imageItem: any) => imageItem.imageId === image.imageId
       )
     );

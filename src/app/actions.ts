@@ -286,6 +286,7 @@ export async function getImage(imageId: string) {
     const image = {
       imageId: imageFromDb.imageId,
       albumId: imageFromDb.albumId,
+      readableTitle: imageFromDb.readableTitle,
       selected: imageFromDb.selected,
       path: await getImageUrl(imageFromDb.path),
     };
@@ -357,12 +358,42 @@ export async function calcAlbumDiskUsage(albumId: string) {
 }
 
 export async function getAllImages(albumId: string) {
+  // try {
+  //   const images = await Image.find({ albumId }).select("-_id").select("-__v");
+  //   console.log("Images FROM GETALLIMAGES:", images);
+
+  //   return images;
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
   try {
     const images = await Image.find({ albumId })
-      .select("-path")
-      .select("-_id")
-      .select("-__v");
-    return images;
+      .select("path")
+      .select("imageId");
+    if (!images || images.length === 0) return;
+
+    const ImagePromises = Promise.all(
+      images.map(async (image) => {
+        const getImageData = await Image.findOne({
+          imageId: image.imageId,
+        })
+          .select("-path")
+          .select("-imageId")
+          .select("-_id")
+          .select("-__v");
+
+        const imageInfo = {
+          imageId: image.imageId,
+          path: await getImageUrl(image.path),
+          ...getImageData._doc,
+        };
+
+        return imageInfo;
+      })
+    );
+
+    return ImagePromises;
   } catch (error) {
     console.log(error);
   }

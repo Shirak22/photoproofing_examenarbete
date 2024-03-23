@@ -16,10 +16,9 @@ export default async function ClientImageIntercept({
   // url path is the same.
 
   const image = await getImage(params.imageId);
-  const albumImages = await getAllImages(image?.albumId);
   const album = await getAlbum(params.albumId);
 
-  if (!image || !album || !albumImages) {
+  if (!image || !album) {
     return notFound();
   }
 
@@ -31,7 +30,7 @@ export default async function ClientImageIntercept({
         className="flex justify-end w-full p-8 h-28 bg-neutral-50 z-10 top-0 left-0 absolute"
       />
       <ModalImage image={image} selectedLimit={album.selectedLimit} />
-      <SlideshowNavButtons image={image} albumImages={albumImages} />
+      <SlideshowNavButtons image={image} />
     </Modal>
   );
 }
