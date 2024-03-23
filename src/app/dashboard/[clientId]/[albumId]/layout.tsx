@@ -1,11 +1,23 @@
-import { getAlbum, getClient, getPhotographer } from "@/app/actions";
+import { getAlbum, getAllImages, getClient, getPhotographer } from "@/app/actions";
 
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import Loading from "./loading";
+import GalleryInfoBar from "@/components/GalleryInfoBar";
 import UploadFiles from "@/components/uploadFiles";
-import H1 from "@/core/typography/H1";
+
+
+  export type TalbumInfo = {
+    proofing: boolean,
+    password: string,
+    noOfSelected: number,
+    selectedLimit: number,
+    totalFiles?: number,
+    confirmed: boolean,
+    albumUrl: string,
+    createdAt: string,
+  }
 
 export default async function albumLayout(
     {children,
@@ -20,6 +32,19 @@ export default async function albumLayout(
     const client = await getClient(params.clientId);
     const photographer = await getPhotographer(session?.user?.email as string);
     const album = await getAlbum(params.albumId);
+    const allFilesInAlbum = await getAllImages(params.albumId);
+
+    const albumInfo : TalbumInfo = {
+      proofing: album?.proofing,
+      password: album?.password,
+      noOfSelected: album?.noOfSelected,
+      selectedLimit: album?.selectedLimit,
+      totalFiles: allFilesInAlbum?.length,
+      confirmed: album?.confirmed,
+      albumUrl: album?.albumUrl,
+      createdAt: album?.createdAt,
+    }
+      
 
     if(!client || !photographer || !album) return redirect("/dashboard");
     if(client.photographerId !== photographer.userId) return notFound();
@@ -27,14 +52,21 @@ export default async function albumLayout(
 
     return (
       <div>
-        
-          <h1 className="text-5xl text-slate-700 mb-4 ">{album?.title}</h1>
-          <UploadFiles albumId={params.albumId} />
+        <section className="flex">
+          <article>
+            <h1 className="text-5xl text-slate-700 mb-1 ">{album?.title}</h1>
+            <p className="text-right text-slate-500 text-sm mr-5">{album?.description}</p>
+          </article>
 
-          <Suspense fallback={<Loading />}>
-          {children}
-          </Suspense>
+           {/* <UploadFiles albumId={params.albumId} /> */}
+
+        </section>
         
+        {/* <button className="bg-slate-500 text-xs p-1 text-white rounded-md">| Upload</button> */}
+
+        <GalleryInfoBar album={albumInfo} />
+
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
     );
 }
