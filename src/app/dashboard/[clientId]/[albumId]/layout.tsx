@@ -1,4 +1,4 @@
-import { getAlbum, getAllImages, getClient, getPhotographer } from "@/app/actions";
+import { calcAlbumDiskUsage, getAlbum, getAllImages, getClient, getPhotographer } from "@/app/actions";
 
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
@@ -17,6 +17,7 @@ import UploadFiles from "@/components/uploadFiles";
     confirmed: boolean,
     albumUrl: string,
     createdAt: string,
+    albumSize?: string,
   }
 
 export default async function albumLayout(
@@ -33,6 +34,7 @@ export default async function albumLayout(
     const photographer = await getPhotographer(session?.user?.email as string);
     const album = await getAlbum(params.albumId);
     const allFilesInAlbum = await getAllImages(params.albumId);
+    const getAlbumSize = await calcAlbumDiskUsage(params.albumId);
 
     const albumInfo : TalbumInfo = {
       proofing: album?.proofing,
@@ -42,13 +44,14 @@ export default async function albumLayout(
       totalFiles: allFilesInAlbum?.length,
       confirmed: album?.confirmed,
       albumUrl: album?.albumUrl,
-      createdAt: album?.createdAt,
+      createdAt: album?.createdDate.toDateString(),
+      albumSize: getAlbumSize,
     }
       
 
     if(!client || !photographer || !album) return redirect("/dashboard");
     if(client.photographerId !== photographer.userId) return notFound();
-
+    
 
     return (
       <div>

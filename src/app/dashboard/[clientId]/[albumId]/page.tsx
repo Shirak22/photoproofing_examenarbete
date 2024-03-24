@@ -1,9 +1,5 @@
-import { getAlbum, getAlbumThumbnails} from "@/app/actions";
-import ImageCardDashboard from "@/components/ImageCardDashboard";
-import UploadFiles from "@/components/uploadFiles";
-import H1 from "@/core/typography/H1";
-import { notFound } from "next/navigation";
-
+import { getAlbumThumbnails} from "@/app/actions";
+import DashboardGallery from "@/components/DashboardGallery";
 export default async function Album({
   params,
 }: {
@@ -19,15 +15,7 @@ export default async function Album({
 
   return (
     <div>
-        {/* //if you want to style you can add styling prop to H1 */}
-  
-      
-      <section className="flex gap-2 justify-between flex-wrap h-full">
-        {thumbs &&
-          thumbs.map((image: any) => (
-            <ImageCardDashboard image={image} albumId={params.albumId} />
-          ))}
-      </section>
+      <DashboardGallery thumbs={thumbs} albumId={params.albumId} />
     </div>
   );
 }

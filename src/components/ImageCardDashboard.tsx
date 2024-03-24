@@ -29,7 +29,7 @@ export default function ImageCardDashboard({
   //image properties onClick className src alt width height key 
   return (
     <div className="relative h-60 w-56  my-4">
-      <div className="bg-white  overflow-hidden relative">
+      <div className="bg-white   relative">
         <Image
           className="object-cover h-48 w-56 "
           src={image.path}
@@ -37,20 +37,20 @@ export default function ImageCardDashboard({
           width={200}
           height={200}
         />
-        <input className="absolute checked:bg-slate-700 bg-slate-200 border-none outline-none focus:checked:bg-slate-200 focus:border-0 hover:checked:bg-slate-300  right-0 top-0" disabled={true} type="checkbox" name="selected" checked={image.selected} />
+        <input className="absolute checked:bg-slate-700 bg-transparent size-9 translate-x-2 -translate-y-4 border-none outline-none focus:checked:bg-slate-200 focus:border-0 hover:checked:bg-slate-300  right-0 bottom-0" disabled={true} type="checkbox" name="selected" checked={image.selected} />
       </div>
       {/* trim the name if it was more then 70 chars and show it on hover  */}
       <div className="flex flex-col items-between justify-center ">
         <p
           className={`text-xs font-sans  text-center mt-1 cursor-default ${
-            image.readableTitle.length > 70
-              ? "truncate hover:whitespace-pre-wrap hover:absolute hover:bottom-1 hover:bg-slate-300 hover:z-10 hover:rounded-b-md hover:p-1 hover:pb-3 hover:max-w-"
+            image.readableTitle.length > 50
+              ? "truncate hover:whitespace-pre-wrap hover:absolute hover:bottom-1 hover:w-64 hover:-translate-x-4 hover:translate-y-4 hover:bg-slate-200 border-spacing-1 hover:z-10 hover:rounded-md hover:p-1 hover:pb-3 "
               : ""
           }`}
         >
           {image.readableTitle}
         </p>
-        {image.readableTitle.length > 70 ? (
+        {image.readableTitle.length > 50 ? (
           <p className="text-xs font-sans  text-center mt-1 cursor-default">
             ...{" "}
             {image.readableTitle.slice(
@@ -78,13 +78,6 @@ export default function ImageCardDashboard({
 
 
 
-
-// {/* <div>
-//         <p>{(image.size / 1000000).toFixed(2)}MB</p>
-//         <p>{image.readableTitle}</p>
-//         <p>{image.extension}</p>
-//         <p>{image.createdDate.toLocaleString("sv")}</p>
-//       </div> */}
 
 function convertFileSize(size: number){
   // return size in KB and MB and GB
