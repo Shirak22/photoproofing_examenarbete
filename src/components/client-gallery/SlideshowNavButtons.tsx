@@ -76,7 +76,10 @@ export default function SlideshowNavButtons({
   }, []);
 
   return (
-    <nav className="flex justify-between w-full px-8  z-10 top-1/2 left-0 absolute">
+    <nav
+      onClick={(e) => e.stopPropagation()}
+      className="flex justify-between w-full px-8 z-30 top-1/2 left-0 absolute"
+    >
       <button
         onClick={() => handlePrevClick()}
         className="px-3 py-3 rounded-full hover:cursor-pointer hover:scale-110 transition-all duration-240"

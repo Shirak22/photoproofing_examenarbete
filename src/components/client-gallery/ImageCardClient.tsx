@@ -19,6 +19,7 @@ export default function ImageCardClient({
     selectedImages,
     setSelectedImages,
     setImageArray,
+    confirmedAlbum,
   } = useGlobalContext();
 
   const [hovering, setHovering] = useState<number>(0); // Handles LikeButton visibility
@@ -27,6 +28,7 @@ export default function ImageCardClient({
   );
 
   const handleLikeButton = (imageId: string) => {
+    if (confirmedAlbum) return; // If the album has been confirmed, do nothing
     if (noOfSelectedImages >= selectedLimit && !currentImage.selected) {
       return;
     }

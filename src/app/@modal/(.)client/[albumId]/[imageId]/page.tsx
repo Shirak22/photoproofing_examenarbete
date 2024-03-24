@@ -25,7 +25,7 @@ export default async function ClientImageIntercept({
   return (
     <Modal>
       <SelectionBar
-        modal={true}
+        inModal={true}
         album={album}
         className="flex justify-end w-full p-8 h-28 bg-neutral-50 z-10 top-0 left-0 absolute"
       />

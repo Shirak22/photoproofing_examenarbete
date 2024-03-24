@@ -16,6 +16,8 @@ interface TContextProps {
   setSelectedImages: Dispatch<SetStateAction<TThumbnail[]>>;
   imageArray: TImage[];
   setImageArray: Dispatch<SetStateAction<TImage[]>>;
+  confirmedAlbum: boolean;
+  setConfirmedAlbum: Dispatch<SetStateAction<boolean>>;
 }
 
 const GlobalContext = createContext<TContextProps>({
@@ -31,6 +33,10 @@ const GlobalContext = createContext<TContextProps>({
   setImageArray: (images): void => {
     images;
   },
+  confirmedAlbum: false,
+  setConfirmedAlbum: (bool): void => {
+    bool;
+  },
 });
 
 export const GlobalContextProvider = ({
@@ -41,6 +47,7 @@ export const GlobalContextProvider = ({
   const [noOfSelectedImages, setNoOfSelectedImages] = useState<number>(0);
   const [selectedImages, setSelectedImages] = useState<TThumbnail[]>([]);
   const [imageArray, setImageArray] = useState<TImage[]>([]);
+  const [confirmedAlbum, setConfirmedAlbum] = useState<boolean>(false);
 
   return (
     <GlobalContext.Provider
@@ -51,6 +58,8 @@ export const GlobalContextProvider = ({
         setSelectedImages,
         imageArray,
         setImageArray,
+        confirmedAlbum,
+        setConfirmedAlbum,
       }}
     >
       {children}

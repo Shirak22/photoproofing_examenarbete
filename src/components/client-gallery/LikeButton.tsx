@@ -22,6 +22,7 @@ export default function LikeButton({
     selectedImages,
     setSelectedImages,
     setImageArray,
+    confirmedAlbum,
   } = useGlobalContext();
 
   const currentImage = selectedImages.find(
@@ -29,6 +30,7 @@ export default function LikeButton({
   );
 
   const handleLikeButton = (imageId: string) => {
+    if (confirmedAlbum) return; // If the album has been confirmed, do nothing
     if (noOfSelectedImages >= selectedLimit && !currentImage.selected) {
       return;
     }
