@@ -34,6 +34,7 @@ function classNames(...classes: string[]) {
 
 export default async function DashboardLayout({
   children,
+
 }: {
   children: React.ReactNode,
 }) {
@@ -41,9 +42,7 @@ export default async function DashboardLayout({
 
   const session = await getServerSession();
   const photographerEmail = session?.user?.email as string;
-  
 
-  
   if (!photographerEmail) {
     redirect("/login");
   }
@@ -125,7 +124,7 @@ export default async function DashboardLayout({
          
 
           <main className="py-10">
-          <Breadcrumbs />
+          {/* <Breadcrumbs /> */}
                           
             <div className="px-4 sm:px-6 lg:px-8">{children}</div>
           </main>

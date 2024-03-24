@@ -53,7 +53,8 @@ export default function GalleryInfoBar({album}: { album: TalbumInfo }) {
 
         <div className="flex items-center   ml-auto">
           <p className="text-slate-200 text-xs self-end px-4 mr-2 rounded-md  bg-slate-500 p-1 font-bold">
-            {album.proofing ? "Proofing" : "Delivered"}
+            {/* opposite of proofing  */}
+            {album.proofing ? "Proofing" : "Final"}
           </p>
           {album.confirmed ? (
             <p className="text-slate-200 text-xs self-end px-4 rounded-md  bg-green-600 p-1 font-bold">

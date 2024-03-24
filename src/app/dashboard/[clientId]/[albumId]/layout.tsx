@@ -5,7 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import Loading from "./loading";
 import GalleryInfoBar from "@/components/GalleryInfoBar";
-import UploadFiles from "@/components/uploadFiles";
+
 
 
   export type TalbumInfo = {
@@ -55,6 +55,7 @@ export default async function albumLayout(
 
     return (
       <div>
+        
         <section className="flex">
           <article>
             <h1 className="text-5xl text-slate-700 mb-1 ">{album?.title}</h1>

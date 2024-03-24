@@ -1,6 +1,5 @@
 import { getClient, getPhotographer } from "@/app/actions";
 import AlbumTableSSR from "@/components/AlbumTableSSR";
-import DashboardLayout from "@/components/DashboardLayout";
 import NewAlbumForm from "@/components/NewAlbumForm";
 import { getServerSession } from "next-auth";
 
@@ -11,10 +10,11 @@ export default async function Client({
     clientId: string;
   };
 }) {
+
   const session = await getServerSession();
   const client = await getClient(params.clientId);
   const { userId } = await getPhotographer(session?.user?.email as string);
-
+  //set client in  globalcontext 
   if (client.photographerId !== userId) {
     return (
       <>
@@ -24,7 +24,7 @@ export default async function Client({
       </>
     );
   }
-
+ 
   return (
     <>
     

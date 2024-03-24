@@ -363,7 +363,6 @@ export async function calcAlbumDiskUsage(albumId: string) {
 export async function getAllImages(albumId: string) {
   try {
     const images = await Image.find({ albumId }).select("-_id").select("-__v");
-    console.log("Images FROM GETALLIMAGES:", images);
 
     return images;
   } catch (error) {
@@ -376,6 +375,29 @@ export async function confirmAlbumSelection(albumId: string) {
     const album = await Album.findOne({ albumId });
     album.confirmed = true;
     await album.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+export async function BreadcrumbsNameCheck(
+  pathSegments: string[],
+) {
+  try {
+    if (pathSegments.length === 0) return null;
+    const client = await Client.findOne({ clientId: pathSegments[0]});
+    const album = await Album.findOne({ albumId: pathSegments[1] });
+    let path = [];
+
+    if (client) {
+      path.push({ name: client.clientName, href: `/dashboard/${client.clientId}` });
+    }if (album) {   
+      path.push({ name: album.title, href: `/dashboard/${client.clientId}/${album.albumId}` });
+    }
+
+    return path;
   } catch (error) {
     console.log(error);
   }
