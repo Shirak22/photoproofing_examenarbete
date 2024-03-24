@@ -1,8 +1,8 @@
 import { getClient, getPhotographer } from "@/app/actions";
 import AlbumTableSSR from "@/components/AlbumTableSSR";
-import DashboardLayout from "@/components/DashboardLayout";
 import NewAlbumForm from "@/components/NewAlbumForm";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 
 export default async function Client({
   params,
@@ -27,17 +27,11 @@ export default async function Client({
 
   return (
     <>
-    
-      {client &&
-        <h1 className="text-5xl font-bold my-20 mb-40">
-          {client.clientName}
-        </h1>
-      }
-
-      {/* <TableHandler type="album" /> */}
+      {client && (
+        <h1 className="text-5xl font-bold my-20 mb-40">{client.clientName}</h1>
+      )}
       <AlbumTableSSR clientId={params.clientId} />
-      <NewAlbumForm clientId={params.clientId} />
-
+      <Link href={`/dashboard/${params.clientId}/new-album`}>NEW ALBUM</Link>
     </>
   );
 }
