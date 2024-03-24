@@ -11,10 +11,11 @@ export default async function Client({
     clientId: string;
   };
 }) {
+
   const session = await getServerSession();
   const client = await getClient(params.clientId);
   const { userId } = await getPhotographer(session?.user?.email as string);
-
+  //set client in  globalcontext 
   if (client.photographerId !== userId) {
     return (
       <>
@@ -24,7 +25,7 @@ export default async function Client({
       </>
     );
   }
-
+ 
   return (
     <>
       {client && (

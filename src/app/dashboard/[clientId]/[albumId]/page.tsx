@@ -12,12 +12,22 @@ export default async function Album({
 
   const thumbs = await getAlbumThumbnails(params.albumId);
   
-  if(!thumbs) return <h1>No files found</h1>;
+  if(!thumbs){
+    return (
+      <div>
+        <UploadFiles albumId={params.albumId} />
+        <h1>No files found</h1>
+      </div>
+    );
+  }else {
+    return (
+      <div>
+        <UploadFiles albumId={params.albumId} />
+        <DashboardGallery thumbs={thumbs} albumId={params.albumId} />
+      </div>
+    );
+  }
+  
 
-  return (
-    <div>
-      <UploadFiles albumId={params.albumId} />
-      <DashboardGallery thumbs={thumbs} albumId={params.albumId} />
-    </div>
-  );
+ 
 }
