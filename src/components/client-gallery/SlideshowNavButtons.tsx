@@ -1,11 +1,11 @@
 "use client";
 
+import { useGlobalContext } from "@/app/context/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SlideshowNavButtons({
   image,
-  albumImages,
 }: {
   image: {
     imageId: string;
@@ -13,33 +13,33 @@ export default function SlideshowNavButtons({
     path: string | undefined;
     albumId: string;
   };
-  albumImages: any;
 }) {
+  const { selectedImages } = useGlobalContext();
   const [currentImageIndex, setCurrentImageIndex] = useState(
-    albumImages.findIndex(
+    selectedImages.findIndex(
       (imageItem: any) => imageItem.imageId === image.imageId
     )
   );
 
   const getIdOfNextImage = () => {
-    if (currentImageIndex === albumImages.length - 1) {
-      return albumImages[0].imageId;
+    if (currentImageIndex === selectedImages.length - 1) {
+      return selectedImages[0].imageId;
     } else {
-      return albumImages[currentImageIndex + 1].imageId;
+      return selectedImages[currentImageIndex + 1].imageId;
     }
   };
 
   const getIdOfPrevImage = () => {
     if (currentImageIndex === 0) {
-      return albumImages[albumImages.length - 1].imageId;
+      return selectedImages[selectedImages.length - 1].imageId;
     } else {
-      return albumImages[currentImageIndex - 1].imageId;
+      return selectedImages[currentImageIndex - 1].imageId;
     }
   };
 
   useEffect(() => {
     setCurrentImageIndex(
-      albumImages.findIndex(
+      selectedImages.findIndex(
         (imageItem: any) => imageItem.imageId === image.imageId
       )
     );
@@ -48,12 +48,14 @@ export default function SlideshowNavButtons({
   const router = useRouter();
   const handlePrevClick = () => {
     // When hitting the prev button on the first image, it goes to the last image
-    router.push(`/client/${image.albumId}/${getIdOfPrevImage()}`);
+    router.replace(`/client/${image.albumId}/${getIdOfPrevImage()}`);
+    // Does not add modal navigation to history stack
   };
 
   const handleNextClick = () => {
     // When hitting the next button on the last image, it goes to the first image
-    router.push(`/client/${image.albumId}/${getIdOfNextImage()}`);
+    router.replace(`/client/${image.albumId}/${getIdOfNextImage()}`);
+    // Does not add modal navigation to history stack
   };
 
   // Keyboard left and right arrow keys can be used to navigate through the images
@@ -74,7 +76,10 @@ export default function SlideshowNavButtons({
   }, []);
 
   return (
-    <nav className="flex justify-between w-full px-8  z-10 top-1/2 left-0 absolute">
+    <nav
+      onClick={(e) => e.stopPropagation()}
+      className="flex justify-between w-full px-8 z-30 top-1/2 left-0 absolute"
+    >
       <button
         onClick={() => handlePrevClick()}
         className="px-3 py-3 rounded-full hover:cursor-pointer hover:scale-110 transition-all duration-240"

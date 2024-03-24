@@ -9,10 +9,6 @@ export default function Breadcrumbs() {
   const pathSegments = pathname.split("/").filter((segment) => segment !== "");
   pathSegments.shift();
 
-  
-  
-
-
   return (
     <nav className="flex ml-10 mb-20" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-3">

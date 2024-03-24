@@ -1,14 +1,22 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Modal({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
-
+  const router = useRouter();
   // Handles Escape key to close modal
+
+  const handleModalClose = () => {
+    setOpen(false);
+    router.back();
+    // Goes back to gallery page since the modal navigation is not added to the history stack
+  };
+
   const handleKeyDown = (e: any) => {
     if (e.key === "Escape") {
-      setOpen(false);
+      handleModalClose();
     }
   };
 
@@ -23,7 +31,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   return (
     open && (
       <div
-        onClick={() => setOpen(false)}
+        onClick={handleModalClose}
         className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-95  z-20"
       >
         <img

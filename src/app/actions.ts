@@ -12,25 +12,21 @@ import { TAlbum, TClient } from "@/core/types";
 import { getServerSession } from "next-auth";
 import crypto from "crypto";
 
-
-export  async function clientPasswordCheck(
-  prevState: { message: string},
+export async function clientPasswordCheck(
+  prevState: { message: string },
   formData: FormData
 ) {
   const client = {
     albumId: formData.get("albumId"),
-    password:  formData.get("password"),
-  }
-
-
+    password: formData.get("password"),
+  };
 
   try {
-    
     const album = await Album.findOne({ albumId: client.albumId });
     if (album.password !== client.password) {
       return { message: "Password is incorrect" };
     }
-    
+
     return { message: "Password is correct" };
   } catch (error) {
     console.log(error);
@@ -290,9 +286,9 @@ export async function getImage(imageId: string) {
     const image = {
       imageId: imageFromDb.imageId,
       albumId: imageFromDb.albumId,
+      readableTitle: imageFromDb.readableTitle,
       selected: imageFromDb.selected,
       path: await getImageUrl(imageFromDb.path),
-      albumId: imageFromDb.albumId,
     };
 
     return image;
@@ -363,11 +359,20 @@ export async function calcAlbumDiskUsage(albumId: string) {
 
 export async function getAllImages(albumId: string) {
   try {
-    const images = await Image.find({ albumId })
-      .select("-path")
-      .select("-_id")
-      .select("-__v");
+    const images = await Image.find({ albumId }).select("-_id").select("-__v");
+    console.log("Images FROM GETALLIMAGES:", images);
+
     return images;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function confirmAlbumSelection(albumId: string) {
+  try {
+    const album = await Album.findOne({ albumId });
+    album.confirmed = true;
+    await album.save();
   } catch (error) {
     console.log(error);
   }

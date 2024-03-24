@@ -13,17 +13,43 @@ export default function ImageCardClient({
   selectedLimit: number;
 }) {
   const router = useRouter();
-  const { noOfSelectedImages, setNoOfSelectedImages } = useGlobalContext();
-  const [selected, setSelected] = useState<boolean>(image.selected);
+  const {
+    noOfSelectedImages,
+    setNoOfSelectedImages,
+    selectedImages,
+    setSelectedImages,
+    setImageArray,
+    confirmedAlbum,
+  } = useGlobalContext();
+
   const [hovering, setHovering] = useState<number>(0); // Handles LikeButton visibility
+  const currentImage = selectedImages.find(
+    (selectedImage) => selectedImage.imageId === image.imageId
+  );
 
   const handleLikeButton = (imageId: string) => {
-    if (noOfSelectedImages >= selectedLimit && !selected) {
+    if (confirmedAlbum) return; // If the album has been confirmed, do nothing
+    if (noOfSelectedImages >= selectedLimit && !currentImage.selected) {
       return;
     }
-    setSelected(!selected);
-    updateSelectedImage(imageId, !selected);
-    setNoOfSelectedImages((prev) => (selected ? prev - 1 : prev + 1));
+    setSelectedImages((prev) =>
+      prev.map((selectedImage) =>
+        selectedImage.imageId === imageId
+          ? { ...selectedImage, selected: !currentImage.selected }
+          : selectedImage
+      )
+    );
+    updateSelectedImage(imageId, !currentImage.selected);
+    setNoOfSelectedImages((prev) =>
+      currentImage.selected ? prev - 1 : prev + 1
+    );
+    setImageArray((prev) =>
+      prev.map((image) =>
+        image.imageId === imageId
+          ? { ...image, selected: !currentImage.selected }
+          : image
+      )
+    );
   };
 
   const handleClick = () => {
@@ -34,7 +60,7 @@ export default function ImageCardClient({
     <div
       onMouseEnter={() => setHovering(image.imageId)}
       onMouseLeave={() => setHovering(0)}
-      className="relative"
+      className="relative bg-white"
     >
       {hovering === image.imageId && (
         <div
@@ -42,7 +68,9 @@ export default function ImageCardClient({
           className=" w-16 h-16 absolute rounded-b-lg top-0 right-6 bg-white shadow-xl flex hover:cursor-pointer"
         >
           <img
-            src={`${selected ? "/heart-filled.svg" : "/heart.svg"}`}
+            src={`${
+              currentImage.selected ? "/heart-filled.svg" : "/heart.svg"
+            }`}
             alt=""
             className="w-10 h-10 m-auto "
           />

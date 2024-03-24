@@ -9,18 +9,18 @@ export default async function ClientGallery({
 }: {
   params: { albumId: string };
 }) {
-  const thumbs = await getAlbumThumbnails(params.albumId);
   const album = await getAlbum(params.albumId);
 
-  if (!album || !thumbs) return notFound();
+  if (!album) return notFound();
 
   const session = await getServerSession();
   if (!session || session?.user?.name !== params.albumId)
     return redirect(`/client/login?albumId=${params.albumId}`);
+
   return (
     <div>
       <Hero title={album.title} description={album.description} />
-      <GallerySection album={album} thumbs={thumbs || []} />
+      <GallerySection album={album} />
     </div>
   );
 }
