@@ -1,5 +1,5 @@
 // import NextAuth from "next-auth";
-import { authOptions } from "@/core/authOptions/authOptions";
+ import authOptions from "@/core/authOptions/authOptions";
 import NextAuth from "next-auth/next";
 // import GoogleProvider from "next-auth/providers/google";
 // import CredentialsProvider from "next-auth/providers/credentials";
