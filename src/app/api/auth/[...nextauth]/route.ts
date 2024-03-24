@@ -1,93 +1,89 @@
-// import NextAuth from "next-auth";
- import authOptions from "@/core/authOptions/authOptions";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { getAlbum, getPhotographer } from "@/app/actions";
 import NextAuth from "next-auth/next";
-// import GoogleProvider from "next-auth/providers/google";
-// import CredentialsProvider from "next-auth/providers/credentials";
-// import { getAlbum, getPhotographer } from "@/app/actions";
-// import { AuthOptions } from "next-auth";
 
-// export const authOptions : AuthOptions  = {
-//   secret: process.env.NEXTAUTH_SECRET,
-//   providers: [
-//     CredentialsProvider({
-//       id: "Dashboard Login",
-//       // Display name on the sign in form (e.g. "Sign in with [name]")
-//       name: "Email",
-//       // `credentials` is used to generate a form on the sign in page.
-//       credentials: {
-//         email: { label: "Email", type: "email", placeholder: "email" },
-//         password: { label: "Password", type: "password" },
-//       },
 
-//       // Authorize function to validate credentials and return a user
-//       async authorize(credentials, req) {
-//         const { email, password } = credentials as {
-//           email: string;
-//           password: string;
-//         };
+export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
+  providers: [
+    CredentialsProvider({
+      id: "Dashboard Login",
+      // Display name on the sign in form (e.g. "Sign in with [name]")
+      name: "Email",
+      // `credentials` is used to generate a form on the sign in page.
+      credentials: {
+        email: { label: "Email", type: "email", placeholder: "email" },
+        password: { label: "Password", type: "password" },
+      },
 
-//         // Gets the photographer with the given email from the database
-//         const photographer = await getPhotographer(email);
+      // Authorize function to validate credentials and return a user
+      async authorize(credentials, req) {
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
 
-//         // Check if the photographer exists in the database
-//         if (photographer) {
-//           // Create a user object to be returned
-//           const user = {
-//             id: photographer.userId,
-//             email: photographer.email,
-//             name: photographer.userName,
-//           };
+        // Gets the photographer with the given email from the database
+        const photographer = await getPhotographer(email);
 
-//           // Password check
-//           if (user && photographer.password === password) {
-//             return user;
-//           }
-//         }
+        // Check if the photographer exists in the database
+        if (photographer) {
+          // Create a user object to be returned
+          const user = {
+            id: photographer.userId,
+            email: photographer.email,
+            name: photographer.userName,
+          };
 
-//         // If no user is found, return null
-//         return null;
-//       },
-//     }),
-//     CredentialsProvider({
-//       // New credentials provider for password-only authentication
-//       id: "Client Login",
-//       name: "Client Password",
+          // Password check
+          if (user && photographer.password === password) {
+            return user;
+          }
+        }
 
-//       credentials: {
-//         password: { label: "Password", type: "password" },
-//         albumId: { label: "Album ID", type: "text" }, 
-//       },
+        // If no user is found, return null
+        return null;
+      },
+    }),
+    CredentialsProvider({
+      // New credentials provider for password-only authentication
+      id: "Client Login",
+      name: "Client Password",
+
+      credentials: {
+        password: { label: "Password", type: "password" },
+        albumId: { label: "Album ID", type: "text" }, 
+      },
   
-//       async authorize(credentials, req) {
-//         const {albumId, password } = credentials as {
-//           password: string;
-//           albumId: string;
-//         };
+      async authorize(credentials, req) {
+        const {albumId, password } = credentials as {
+          password: string;
+          albumId: string;
+        };
 
-//         // Get the album from the database
-//         const album = await getAlbum(albumId);
-//         if(album && password === album.password){
-//           return {id: albumId, name: albumId};
-//         }else {
-//           return null;
-//         }
-//       },
-//     }),
+        // Get the album from the database
+        const album = await getAlbum(albumId);
+        if(album && password === album.password){
+          return {id: albumId, name: albumId};
+        }else {
+          return null;
+        }
+      },
+    }),
     
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-//     }),
-//   ],
-//   pages: {
-//      signIn: "/login",
-//      //signOut: "/signout",
-//       // error: "/login-error",
-//     // newUser: "/new-user",
-//   },
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+  ],
+  pages: {
+     signIn: "/login",
+     //signOut: "/signout",
+      // error: "/login-error",
+    // newUser: "/new-user",
+  },
   
-// };
-
-export default NextAuth(authOptions);
+});
 
 // export { handler as GET, handler as POST };
