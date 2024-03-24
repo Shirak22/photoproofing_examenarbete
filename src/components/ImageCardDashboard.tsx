@@ -62,11 +62,11 @@ export default function ImageCardDashboard({
           ""
         )}
 
-        <div className="flex justify-between mt-2">
+        <div className="flex justify-between cursor-default mt-2">
         <p className="text-xs text-slate-400 self-end">
             {convertFileSize(image.size)}
           </p>
-          <p className="text-xs text-slate-400 self-end">
+          <p className="text-xs text-slate-200 hover:text-slate-400 self-end">
             {image.createdDate.toLocaleString("sv")}
           </p>
           

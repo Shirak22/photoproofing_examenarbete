@@ -116,18 +116,7 @@ export async function getClient(clientId: string) {
   }
 }
 
-// export interface TAlbum {
-//   albumId: string,
-//   clientId: string,
-//   title:string,
-//   description:string,
-//   password:string,
-//   createdDate: Date,
-//   selectedLimit: number,
-//   images: string[]  ,
-//   confirmed: boolean,
-//   proofing: boolean,
-// }
+
 
 export async function createAlbum(
   // MAKE SURE TO CHANGE TO CLIENTID LATER
@@ -223,6 +212,20 @@ export async function checkSelectedMaxLimitInDB(
     console.log(error);
   }
 }
+
+
+export async function uploadFilesAction(
+    prevState: { message: string },
+    formData: FormData) {
+    const albumId = formData.get("albumId") as string;
+    try {
+        await uploadImages(formData, albumId);
+        return { message: "Files uploaded successfully" };
+    } catch (error) {
+        console.log(error);
+        return { message: "Failed!" };
+    }
+  }
 
 export async function uploadImages(formData: FormData, albumId: string) {
   let files = formData.getAll("file") as File[];

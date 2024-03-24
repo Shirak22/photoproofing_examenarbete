@@ -1,6 +1,5 @@
-"use client";
+"use client"
 
-import { getAlbum, getClient } from "@/app/actions";
 import { usePathname } from "next/navigation";
 
 export default function Breadcrumbs() {
@@ -32,7 +31,7 @@ export default function Breadcrumbs() {
               <div className="flex items-center">
                 {isCurrent ? (
                   <span className="ml-4 text-sm font-medium text-gray-500">
-                    {segment}
+                    {segment} 
                   </span>
                 ) : (
                   <a

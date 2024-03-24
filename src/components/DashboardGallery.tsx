@@ -2,7 +2,6 @@
 import { Switch } from "@headlessui/react";
 import { useState } from "react";
 import ImageCardDashboard from "./ImageCardDashboard";
-import UploadFiles from "./uploadFiles";
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
@@ -38,11 +37,11 @@ export default function DashboardGallery(params: {thumbs: any, albumId: string})
               </Switch>
             </div>
           
-          <section className="flex gap-2 justify-start flex-wrap h-full">
+          <section className="flex gap-4 justify-start flex-wrap h-full">
             {thumbs && enabled ? thumbs.filter((image: any) => image.selected).map((image: any) => (
-                <ImageCardDashboard image={image} albumId={params.albumId} />
+                <ImageCardDashboard key={image.imageId} image={image} albumId={params.albumId} />
                 )) : thumbs.map((image: any) => (
-                <ImageCardDashboard image={image} albumId={params.albumId} />
+                <ImageCardDashboard key={image.imageId} image={image} albumId={params.albumId} />
                 ))}
 
           </section>

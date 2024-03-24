@@ -15,7 +15,7 @@
 import { getServerSession } from "next-auth";
 import Breadcrumbs from "./Breadcrumbs";
 import DiskUsage from "./DiskUsage";
-import { redirect  } from "next/navigation";
+import { redirect, useRouter  } from "next/navigation";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", current: true },
@@ -35,16 +35,19 @@ function classNames(...classes: string[]) {
 export default async function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode,
 }) {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const session = await getServerSession();
   const photographerEmail = session?.user?.email as string;
+  
 
+  
   if (!photographerEmail) {
     redirect("/login");
   }
+
 
 
   return (
