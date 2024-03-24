@@ -58,7 +58,7 @@ export default async function albumLayout(
         <section className="flex">
           <article>
             <h1 className="text-5xl text-slate-700 mb-1 ">{album?.title}</h1>
-            <p className="text-right text-slate-500 text-sm mr-5">{album?.description}</p>
+            <p className="text-slate-500 text-sm ml-5">{album?.description}</p>
           </article>
 
            {/* <UploadFiles albumId={params.albumId} /> */}
