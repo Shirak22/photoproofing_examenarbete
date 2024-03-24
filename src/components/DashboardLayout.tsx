@@ -15,6 +15,7 @@
 import { getServerSession } from "next-auth";
 import Breadcrumbs from "./Breadcrumbs";
 import DiskUsage from "./DiskUsage";
+import { redirect, useRouter  } from "next/navigation";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", current: true },
@@ -33,13 +34,21 @@ function classNames(...classes: string[]) {
 
 export default async function DashboardLayout({
   children,
+
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode,
 }) {
   // const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const session = await getServerSession();
   const photographerEmail = session?.user?.email as string;
+
+  if (!photographerEmail) {
+    redirect("/login");
+  }
+
+
+
   return (
     <>
       <div>
@@ -73,7 +82,6 @@ export default async function DashboardLayout({
                 </li>
                 <li>
                   <div className="text-xs font-semibold leading-6 text-gray-400">
-                    Reviewed Albums
                   </div>
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
@@ -113,53 +121,11 @@ export default async function DashboardLayout({
         </div>
 
         <div className="lg:pl-72">
-          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-            <button
-              type="button"
-              className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
-            >
-              <span className="sr-only">Open sidebar</span>
-            </button>
-
-            {/* Separator */}
-            <div
-              className="h-6 w-px bg-gray-900/10 lg:hidden"
-              aria-hidden="true"
-            />
-
-            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-              <form className="relative flex flex-1" action="#" method="GET">
-                <label htmlFor="search-field" className="sr-only">
-                  Search
-                </label>
-
-                <input
-                  id="search-field"
-                  className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-                  placeholder="Search..."
-                  type="search"
-                  name="search"
-                />
-              </form>
-              <div className="flex items-center gap-x-4 lg:gap-x-6">
-                <button
-                  type="button"
-                  className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">View notifications</span>
-                </button>
-
-                {/* Separator */}
-                <div
-                  className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10"
-                  aria-hidden="true"
-                />
-              </div>
-            </div>
-          </div>
+         
 
           <main className="py-10">
-            <Breadcrumbs />
+          {/* <Breadcrumbs /> */}
+                          
             <div className="px-4 sm:px-6 lg:px-8">{children}</div>
           </main>
         </div>

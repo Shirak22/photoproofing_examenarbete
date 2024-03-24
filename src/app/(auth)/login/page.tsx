@@ -12,7 +12,7 @@ export default function AuthLogin() {
     const password = formData.get("password") as string;
 
     // Sign in with credentials
-    signIn("credentials", {
+    signIn("Dashboard Login", {
       email,
       password,
       callbackUrl: "/dashboard",

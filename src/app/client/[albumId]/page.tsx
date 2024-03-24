@@ -1,29 +1,26 @@
-import { getAlbum, getAlbumThumbnails, getClient, getPhotographer } from "@/app/actions";
-import AlbumGallery from "@/components/AlbumGallery";
-import { useSession } from "next-auth/react";
+import { getAlbum, getAlbumThumbnails } from "@/app/actions";
+import GallerySection from "@/components/client-gallery/GallerySection";
+import Hero from "@/components/client-gallery/Hero";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
 export default async function ClientGallery({
   params,
 }: {
   params: { albumId: string };
 }) {
-  // Hämta album från databasen
-  // Hämta bilder från S3
+  const album = await getAlbum(params.albumId);
 
-  const albumInfo = await getAlbum(params.albumId);
-  const clientData = await getClient(albumInfo.clientId);
-  const albumThumbnails = await getAlbumThumbnails(params.albumId);
+  if (!album) return notFound();
 
+  const session = await getServerSession();
+  if (!session || session?.user?.name !== params.albumId)
+    return redirect(`/client/login?albumId=${params.albumId}`);
 
   return (
     <div>
-      <h1 className="text-4xl">Album {albumInfo.title}</h1>
-      <h1 className="text-4xl">Client {clientData.clientName}</h1>
-      <AlbumGallery
-        albumId={params.albumId}
-        images={albumThumbnails}
-        albumData={albumInfo}
-      />
+      <Hero title={album.title} description={album.description} />
+      <GallerySection album={album} />
     </div>
   );
 }

@@ -12,6 +12,27 @@ import { TAlbum, TClient } from "@/core/types";
 import { getServerSession } from "next-auth";
 import crypto from "crypto";
 
+export async function clientPasswordCheck(
+  prevState: { message: string },
+  formData: FormData
+) {
+  const client = {
+    albumId: formData.get("albumId"),
+    password: formData.get("password"),
+  };
+
+  try {
+    const album = await Album.findOne({ albumId: client.albumId });
+    if (album.password !== client.password) {
+      return { message: "Password is incorrect" };
+    }
+
+    return { message: "Password is correct" };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function createClient(
   prevState: { message: string },
   formData: FormData
@@ -91,18 +112,7 @@ export async function getClient(clientId: string) {
   }
 }
 
-// export interface TAlbum {
-//   albumId: string,
-//   clientId: string,
-//   title:string,
-//   description:string,
-//   password:string,
-//   createdDate: Date,
-//   selectedLimit: number,
-//   images: string[]  ,
-//   confirmed: boolean,
-//   proofing: boolean,
-// }
+
 
 export async function createAlbum(
   // MAKE SURE TO CHANGE TO CLIENTID LATER
@@ -147,7 +157,7 @@ export async function getAlbum(albumId: string) {
       .select("-__v");
     console.log("Album:", album);
 
-    return album;
+    return album._doc;
   } catch (err) {
     return { message: "Failed!" };
   }
@@ -198,6 +208,20 @@ export async function checkSelectedMaxLimitInDB(
     console.log(error);
   }
 }
+
+
+export async function uploadFilesAction(
+    prevState: { message: string },
+    formData: FormData) {
+    const albumId = formData.get("albumId") as string;
+    try {
+        await uploadImages(formData, albumId);
+        return { message: "Files uploaded successfully" };
+    } catch (error) {
+        console.log(error);
+        return { message: "Failed!" };
+    }
+  }
 
 export async function uploadImages(formData: FormData, albumId: string) {
   let files = formData.getAll("file") as File[];
@@ -261,8 +285,11 @@ export async function getAlbumThumbnails(albumId: string) {
 export async function getImage(imageId: string) {
   try {
     const imageFromDb = await Image.findOne({ imageId });
+    if (!imageFromDb) return null;
     const image = {
       imageId: imageFromDb.imageId,
+      albumId: imageFromDb.albumId,
+      readableTitle: imageFromDb.readableTitle,
       selected: imageFromDb.selected,
       path: await getImageUrl(imageFromDb.path),
     };
@@ -328,6 +355,49 @@ export async function calcAlbumDiskUsage(albumId: string) {
     return diskUsage / 1000000 > 999
       ? (diskUsage / 1000000000).toFixed(2) + "GB"
       : (diskUsage / 1000000).toFixed(2) + "MB";
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAllImages(albumId: string) {
+  try {
+    const images = await Image.find({ albumId }).select("-_id").select("-__v");
+
+    return images;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function confirmAlbumSelection(albumId: string) {
+  try {
+    const album = await Album.findOne({ albumId });
+    album.confirmed = true;
+    await album.save();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+export async function BreadcrumbsNameCheck(
+  pathSegments: string[],
+) {
+  try {
+    if (pathSegments.length === 0) return null;
+    const client = await Client.findOne({ clientId: pathSegments[0]});
+    const album = await Album.findOne({ albumId: pathSegments[1] });
+    let path = [];
+
+    if (client) {
+      path.push({ name: client.clientName, href: `/dashboard/${client.clientId}` });
+    }if (album) {   
+      path.push({ name: album.title, href: `/dashboard/${client.clientId}/${album.albumId}` });
+    }
+
+    return path;
   } catch (error) {
     console.log(error);
   }

@@ -4,6 +4,7 @@ import "./globals.css";
 import { connectToDB } from "@/services/database/db";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/SessionProvider";
+import { GlobalContextProvider } from "./context/store";
 import LoginNavBar from "@/components/LoginNavBar";
 connectToDB();
 
@@ -17,9 +18,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
   modal,
+  form,
 }: Readonly<{
   children: React.ReactNode;
   modal?: React.ReactNode;
+  form?: React.ReactNode;
 }>) {
   const session = await getServerSession();
 
@@ -27,9 +30,12 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider session={session}>
-          {/* <LoginNavBar />  Handles login */}
-          {children}
-          {modal}
+          <GlobalContextProvider>
+            <LoginNavBar />
+            {children}
+            {modal}
+            {form}
+          </GlobalContextProvider>
         </SessionProvider>
       </body>
     </html>
