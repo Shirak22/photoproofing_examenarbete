@@ -88,6 +88,6 @@ import NextAuth from "next-auth/next";
   
 // };
 
-export default  NextAuth(authOptions);
+export default NextAuth(authOptions);
 
 // export { handler as GET, handler as POST };

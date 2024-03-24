@@ -87,4 +87,4 @@ import { AuthOptions } from "next-auth";
   };
   
 
-  export default authOptions;
+  export  {authOptions};
