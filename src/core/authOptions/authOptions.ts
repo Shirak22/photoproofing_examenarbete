@@ -4,7 +4,7 @@ import { getAlbum, getPhotographer } from "@/app/actions";
 import { AuthOptions } from "next-auth";
 
 
- const authOptions : AuthOptions  = {
+ const authOptions  = {
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
       CredentialsProvider({
