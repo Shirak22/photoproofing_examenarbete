@@ -21,8 +21,8 @@ export default async function RootLayout({
   form,
 }: Readonly<{
   children: React.ReactNode;
-  modal?: React.ReactNode;
-  form?: React.ReactNode;
+  modal: React.ReactNode;
+  form: React.ReactNode;
 }>) {
   const session = await getServerSession();
 
