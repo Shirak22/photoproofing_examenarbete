@@ -3,6 +3,7 @@ import { uploadFilesAction } from "@/app/actions";
 import UploadFormWrapper from "./UploadFormWrapper";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect, useRef, useState } from "react";
+import Modal from "./client-gallery/Modal";
 
 const initialState = {
   message: "",
@@ -38,18 +39,18 @@ export default function UploadFiles({ albumId }: { albumId: string }) {
 
   return (
     <div
-      className=" flex max-w-md ml-auto mb-4 relative  "
+      className=" flex w-96 ml-auto mb-4 relative"
       onClick={handleClickOutside}
     >
       <button
         className=" bg-gray-800 text-white font-semibold  p-1 text-sm px-4 py-2 rounded-md ml-auto hover:cursor-pointer hover:bg-gray-700"
         onClick={() => setOpen(!open)}
       >
-        Upload images
+        Add Images
       </button>
       {open && (
         <form
-          className="absolute z-10 top-10 rounded-md w-full py-4 px-2 table ml-auto bg-slate-300 "
+          className="absolute bg-white shadow-xl z-10 top-0  w-full p-8  rounded-2xl"
           action={formAction}
         >
           <div ref={modalRef}>
@@ -65,38 +66,38 @@ export default function UploadFiles({ albumId }: { albumId: string }) {
                 hidden
               />
               <label
-                className="text-xs py-1 px-2 rounded-md bg-slate-300 hover:bg-slate-500 hover:text-white transition duration-100 ease-in-out"
+                className="text-sm font-semibold px-4 py-2 rounded-md border-2 border-gray-200   hover:border-gray-300 text-gray-600 bg-gray-50 hover:cursor-pointer transition duration-100 ease-in-out"
                 htmlFor="file"
               >
-                Choose..
+                Choose images
               </label>
-              {selectedFiles && (
-                <ul className="bg-slate-500 px-6  py-4 mt-2 rounded-lg ">
+              {selectedFiles && selectedFiles.length > 0 ? (
+                <ul className="py-6 rounded-lg ">
                   {Array.from(selectedFiles).map((file, index) => (
-                    <li className="text-slate-200 text-xs  " key={index}>
-                      {index + "-->" + file.name}
+                    <li className="text-gray-600 text-xs " key={index}>
+                      {index + 1 + " --> " + file.name}
                     </li>
                   ))}
                 </ul>
+              ) : (
+                <p className="text-gray-600 text-xs py-6">No files selected</p>
               )}
               <div className="flex mt-4">
                 <p className="text-xs mt-auto text-slate-500">
                   {" "}
                   {res?.message}{" "}
                 </p>
-                {selectedFiles && selectedFiles.length > 0 ? (
-                  <p className="text-xs mt-auto">
+                {selectedFiles && selectedFiles.length > 0 && (
+                  <p className="text-xs  text-gray-600 font-semibold mt-auto">
                     {selectedFiles.length} files selected
                   </p>
-                ) : (
-                  <p> </p>
                 )}
                 <button
-                  className=" text-xs ml-auto  bg-slate-500  p-2 rounded-md text-white hover:bg-slate-500 transition duration-300 ease-in-out"
+                  className="bg-gray-800 text-white font-semibold  p-1 text-sm px-4 py-2 rounded-md ml-auto hover:cursor-pointer hover:bg-gray-700"
                   type="submit"
                   onClick={() => setSelectedFiles(null)}
                 >
-                  upload
+                  Upload images
                 </button>
               </div>
             </UploadFormWrapper>
