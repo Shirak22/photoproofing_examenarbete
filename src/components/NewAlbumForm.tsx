@@ -69,7 +69,7 @@ export default function NewAlbumForm({ clientId }: { clientId: string }) {
               type="text"
               id="description"
               name="description"
-              placeholder="A beautiful wedding in the countryside."
+              placeholder="A beautiful wedding in the countryside"
               className="w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -88,7 +88,7 @@ export default function NewAlbumForm({ clientId }: { clientId: string }) {
               type="number"
               id="selectedLimit"
               name="selectedLimit"
-              placeholder="john@example.com"
+              placeholder="25"
               className="col-span-2  w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
             />
           </div>
