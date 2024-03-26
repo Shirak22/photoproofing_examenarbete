@@ -1,28 +1,13 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { getServerSession } from "next-auth";
-import Breadcrumbs from "./Breadcrumbs";
 import DiskUsage from "./DiskUsage";
-import { redirect, useRouter  } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", current: true },
   { name: "Clients", href: "#", current: false },
   { name: "Albums", href: "#", current: false },
 ];
-const teams = [
+const albums = [
   { id: 1, name: "Wedding 2023", href: "#", initial: "W", current: false },
   { id: 2, name: "Student 2023", href: "#", initial: "S", current: false },
   { id: 3, name: "Birthday party", href: "#", initial: "B", current: false },
@@ -34,12 +19,9 @@ function classNames(...classes: string[]) {
 
 export default async function DashboardLayout({
   children,
-
 }: {
-  children: React.ReactNode,
+  children: React.ReactNode;
 }) {
-  // const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const session = await getServerSession();
   const photographerEmail = session?.user?.email as string;
 
@@ -47,15 +29,13 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-
-
   return (
     <>
       <div>
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto  bg-gray-900 px-6 pb-4">
             <h1 className="text-2xl font-semibold text-white mt-14">
               Photoproofing
             </h1>
@@ -81,32 +61,33 @@ export default async function DashboardLayout({
                   </ul>
                 </li>
                 <li>
-                  <div className="text-xs font-semibold leading-6 text-gray-400">
-                  </div>
+                  <div className="text-xs font-semibold leading-6 text-gray-400"></div>
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
-                    {teams.map((team) => (
-                      <li key={team.name}>
+                    {albums.map((album) => (
+                      <li key={album.name}>
                         <a
-                          href={team.href}
+                          href={album.href}
                           className={classNames(
-                            team.current
+                            album.current
                               ? "bg-gray-800 text-white"
                               : "text-gray-400 hover:text-white hover:bg-gray-800",
                             "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                           )}
                         >
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                            {team.initial}
+                            {album.initial}
                           </span>
-                          <span className="truncate">{team.name}</span>
+                          <span className="truncate">{album.name}</span>
                         </a>
                       </li>
                     ))}
                   </ul>
                 </li>
-                {photographerEmail && <li className="mt-auto">
-                  <DiskUsage email={photographerEmail} />
-                </li>}
+                {photographerEmail && (
+                  <li className="mt-auto">
+                    <DiskUsage email={photographerEmail} />
+                  </li>
+                )}
                 <li className="mt-auto">
                   <a
                     href="#"
@@ -120,14 +101,8 @@ export default async function DashboardLayout({
           </div>
         </div>
 
-        <div className="lg:pl-72">
-         
-
-          <main className="py-10">
-          {/* <Breadcrumbs /> */}
-                          
-            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
-          </main>
+        <div className="pl-72 ">
+          <main className="px-32 bg-gray-100 pb-48">{children}</main>
         </div>
       </div>
     </>
