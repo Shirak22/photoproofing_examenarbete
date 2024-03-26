@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/SessionProvider";
 import { GlobalContextProvider } from "./context/store";
 import LoginNavBar from "@/components/LoginNavBar";
+import { useRouter } from "next/router";
 connectToDB();
 
 const inter = Inter({ subsets: ["latin"] });
