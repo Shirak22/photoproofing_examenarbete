@@ -17,7 +17,7 @@ export default function ImageCardDashboard({
   const [selectedImage, setSelectedImage] = useState(image.selected);
 
   const handleClick = () => {
-    router.push(`/client/${albumId}/${image.imageId}`);
+    // router.push(`/client/${albumId}/${image.imageId}`);
   };
 
   const handleSelected = () => {
@@ -27,17 +27,18 @@ export default function ImageCardDashboard({
 
   //image properties onClick className src alt width height key
   return (
-    <div className="relative">
-      <div className="bg-gray-50 relative">
+    <div className="relative bg-white rounded-lg overflow-hidden">
+      <div className=" relative h-64 overflow-hidden ">
         <Image
-          className="object-cover"
+          onClick={handleClick}
+          className="object-cover w-full h-full rounded-t-lg hover:cursor-pointer hover:scale-105 transition-transform duration-400 ease-in-out"
           src={image.path}
           alt={image.readableTitle}
           width={200}
           height={200}
         />
         <input
-          className="absolute checked:bg-slate-700 bg-transparent size-9 translate-x-2 -translate-y-4 border-none outline-none focus:checked:bg-slate-200 focus:border-0 hover:checked:bg-slate-300  right-0 bottom-0"
+          className="absolute checked:bg-gray-800 bg-transparent h-7 w-10  border-none outline-none focus:checked:bg-slate-200 focus:border-0 hover:checked:bg-gray-900  right-0 top-0 rounded-bl-3xl rounded-tr-lg"
           disabled={true}
           type="checkbox"
           name="selected"
@@ -45,9 +46,9 @@ export default function ImageCardDashboard({
         />
       </div>
       {/* trim the name if it was more then 70 chars and show it on hover  */}
-      <div className="flex flex-col items-between justify-center ">
+      <div className="flex text-gray-600 flex-col items-between justify-center  rounded-b-lg p-4 ">
         <p
-          className={`text-sm mt-4 cursor-default ${
+          className={`text-sm mt-2 cursor-default ${
             image.readableTitle.length > 50
               ? "truncate hover:whitespace-pre-wrap hover:absolute hover:bottom-1 hover:w-64 hover:-translate-x-4 hover:translate-y-4 hover:bg-slate-200 border-spacing-1 hover:z-10 hover:rounded-md hover:p-1 hover:pb-3 "
               : ""
@@ -56,7 +57,7 @@ export default function ImageCardDashboard({
           {image.readableTitle}
         </p>
         {image.readableTitle.length > 50 ? (
-          <p className="text-xs   text-center mt-1 cursor-default">
+          <p className="text-xs text-center mt-1 cursor-default">
             ...{" "}
             {image.readableTitle.slice(
               image.readableTitle.length - 20,

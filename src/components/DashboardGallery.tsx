@@ -47,7 +47,7 @@ export default function DashboardGallery(params: {
             />
           </Switch>
         </div>
-        <section className="grid grid-cols-5 gap-x-6 gap-y-8 justify-start flex-wrap h-full">
+        <section className="bg-gray-100 rounded-2xl p-6 grid grid-cols-5 gap-x-3 gap-y-12 justify-start flex-wrap h-full">
           {thumbs && enabled
             ? thumbs
                 .filter((image: any) => image.selected)

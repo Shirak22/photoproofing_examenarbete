@@ -42,20 +42,28 @@ export default async function Album({
 
   const handleConfirmed = () => {
     if (album.confirmed) {
-      return <>Confirmed</>;
+      return "Confirmed";
     } else {
-      return <>Not Confirmed</>;
+      return "Not Confirmed";
     }
   };
 
   const stats2 = [
     {
       title: "Album type",
-      value: "Proofing",
+      value: album.proofing ? "Proofing" : "Delivery",
     },
     {
       title: "Selection status",
       value: handleConfirmed(),
+    },
+    {
+      title: "Password",
+      value: <>{album.password}</>,
+    },
+    {
+      title: "Shareable link",
+      value: <DocumentDuplicateIcon className="h-6 w-6" />,
     },
   ];
 
