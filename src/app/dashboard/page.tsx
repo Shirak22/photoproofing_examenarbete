@@ -1,17 +1,57 @@
-import NewClientForm from "@/components/NewClientForm";
 import ClientTableSSR from "@/components/ClientTableSSR";
-import Link from "next/link";
 import { getServerSession } from "next-auth";
+import { getAllAlbums, getAllClients, getPhotographer } from "../actions";
 
-export default async function Dashboard() {
+interface Stat {
+  name: string;
+  value: string;
+  stat?: string;
+}
+export default async function Dashboard(
+  
+) {
   const session = await getServerSession();
-  const stats = [
-    { name: "Total albums", value: "12", stat: "+4 last week" },
-    { name: "Awaiting selection", value: "6", stat: "+2 last week" },
-    { name: "Selection completed", value: "16", stat: "+3 last week" },
-    { name: "Completed photoshoots", value: "16", stat: "6+ last week" },
-  ];
+  const email =  session?.user?.email;
+ const stats: Stat[] = [];
 
+  try {
+    const photographer = await getPhotographer(email as string) ; 
+    const clients = await getAllClients(photographer.userId as string);
+    const albumsInfo = [];
+
+    for (let i = 0; i < clients.length; i++) {
+      const albums = await getAllAlbums(clients[i].clientId as string);
+      albumsInfo.push(albums);
+    }
+
+    stats.push(
+      {
+        name: "Total Clients",
+        value: clients.length.toString(),
+        
+      },
+      {
+        name: "Total Albums",
+        value: albumsInfo.flat().length.toString(),
+      },
+      {
+        name: "Total confirmed Albums",
+        value: albumsInfo.flat().filter((album) => album.confirmed).length.toString(),
+      },
+      {
+        name: "Total proofing Albums",
+        value: albumsInfo.flat().filter((album) => album.proofing).length.toString(),
+      }
+    );
+    
+    
+
+  } catch (error) {
+      console.log(error);
+      
+  }
+ 
+  
   return (
     <>
       <div className="grid grid-cols-2 mt-12 mb-6 gap-6">

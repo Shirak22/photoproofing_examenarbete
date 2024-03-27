@@ -92,7 +92,7 @@ export async function createClient(
   }
 }
 
-export async function getAllClients(photographerId: string) {
+export async function getAllClients(photographerId: string) : Promise<TClient[] | any> {
   try {
     const clients = await Client.find({ photographerId });
     return clients;
@@ -141,7 +141,7 @@ export async function createAlbum(
   }
 }
 
-export async function getAllAlbums(clientId: string) {
+export async function getAllAlbums(clientId: string) : Promise<TAlbum[] | any>{
   try {
     const albums = await Album.find({ clientId });
     return albums;

@@ -1,8 +1,15 @@
-import { getClient, getPhotographer } from "@/app/actions";
+import { getAllAlbums, getAllImages, getClient, getPhotographer } from "@/app/actions";
 import AlbumTableSSR from "@/components/AlbumTableSSR";
 import NewAlbumForm from "@/components/NewAlbumForm";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+
+interface Stat {
+  name: string;
+  value: string;
+  stat?: string;
+
+}
 
 export default async function Client({
   params,
@@ -14,6 +21,9 @@ export default async function Client({
   const session = await getServerSession();
   const client = await getClient(params.clientId);
   const { userId } = await getPhotographer(session?.user?.email as string);
+  const stats:Stat[] = [];
+  
+
   //set client in  globalcontext
   if (client.photographerId !== userId) {
     return (
@@ -24,10 +34,30 @@ export default async function Client({
       </>
     );
   }
-  const stats = [
-    { name: "Total albums", value: "12", stat: "+4 last week" },
-    { name: "Awaiting selection", value: "6", stat: "+2 last week" },
-  ];
+
+  try {
+    const albums = await getAllAlbums(params.clientId); 
+
+    const totalImages = await Promise.all(albums.map(async (album:any) => {
+      const image = await getAllImages(album.albumId) as any;
+      return image.length;
+    }));
+
+    stats.push(
+      {
+        name: "Total albums",
+        value: albums.length.toString(),
+      },
+      {
+        name: "Total client images",
+        value: totalImages.reduce((a, b) => a + b, 0).toString(),
+      },
+    );
+  } catch (error) {
+    console.log(error);
+  }
+
+  
 
   return (
     <>
