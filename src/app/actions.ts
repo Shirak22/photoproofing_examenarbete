@@ -92,7 +92,9 @@ export async function createClient(
   }
 }
 
-export async function getAllClients(photographerId: string) : Promise<TClient[] | any> {
+export async function getAllClients(
+  photographerId: string
+): Promise<TClient[] | any> {
   try {
     const clients = await Client.find({ photographerId });
     return clients;
@@ -111,8 +113,6 @@ export async function getClient(clientId: string) {
     return { message: "Failed!" };
   }
 }
-
-
 
 export async function createAlbum(
   // MAKE SURE TO CHANGE TO CLIENTID LATER
@@ -141,7 +141,7 @@ export async function createAlbum(
   }
 }
 
-export async function getAllAlbums(clientId: string) : Promise<TAlbum[] | any>{
+export async function getAllAlbums(clientId: string): Promise<TAlbum[] | any> {
   try {
     const albums = await Album.find({ clientId });
     return albums;
@@ -209,19 +209,19 @@ export async function checkSelectedMaxLimitInDB(
   }
 }
 
-
 export async function uploadFilesAction(
-    prevState: { message: string },
-    formData: FormData) {
-    const albumId = formData.get("albumId") as string;
-    try {
-        await uploadImages(formData, albumId);
-        return { message: "Files uploaded successfully" };
-    } catch (error) {
-        console.log(error);
-        return { message: "Failed!" };
-    }
+  prevState: { message: string },
+  formData: FormData
+) {
+  const albumId = formData.get("albumId") as string;
+  try {
+    await uploadImages(formData, albumId);
+    return { message: "Files uploaded successfully" };
+  } catch (error) {
+    console.log(error);
+    return { message: "Failed!" };
   }
+}
 
 export async function uploadImages(formData: FormData, albumId: string) {
   let files = formData.getAll("file") as File[];
@@ -314,6 +314,20 @@ export async function getPhotographer(email: string) {
   }
 }
 
+export async function getPhotographerById(id: string) {
+  try {
+    const photographer = await User.findOne({ userId: id });
+
+    if (!photographer) {
+      return { message: "Photographer not found in DB" };
+    }
+
+    return photographer._doc;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function calcDiskUsage(photographerId: string) {
   let diskUsage = 0;
   try {
@@ -380,21 +394,24 @@ export async function confirmAlbumSelection(albumId: string) {
   }
 }
 
-
-
-export async function BreadcrumbsNameCheck(
-  pathSegments: string[],
-) {
+export async function BreadcrumbsNameCheck(pathSegments: string[]) {
   try {
     if (pathSegments.length === 0) return null;
-    const client = await Client.findOne({ clientId: pathSegments[0]});
+    const client = await Client.findOne({ clientId: pathSegments[0] });
     const album = await Album.findOne({ albumId: pathSegments[1] });
     let path = [];
 
     if (client) {
-      path.push({ name: client.clientName, href: `/dashboard/${client.clientId}` });
-    }if (album) {   
-      path.push({ name: album.title, href: `/dashboard/${client.clientId}/${album.albumId}` });
+      path.push({
+        name: client.clientName,
+        href: `/dashboard/${client.clientId}`,
+      });
+    }
+    if (album) {
+      path.push({
+        name: album.title,
+        href: `/dashboard/${client.clientId}/${album.albumId}`,
+      });
     }
 
     return path;
