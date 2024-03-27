@@ -22,7 +22,6 @@ export default async function Album({
   const album = await getAlbum(params.albumId);
   const albumSize = await calcAlbumDiskUsage(params.albumId);
 
-  console.log(thumbs);
 
   const stats = [
     {
