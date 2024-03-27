@@ -89,7 +89,7 @@ export default async function ClientTableSSR() {
           </table>
         </section>
       ) : (
-        <EmptyState type="Client" />
+        <EmptyState type="Client" route="/dashboard/new-client" />
       )}
     </>
   );

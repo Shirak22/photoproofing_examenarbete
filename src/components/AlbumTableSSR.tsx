@@ -10,6 +10,18 @@ export default async function AlbumTableSSR({
 }) {
   const albums = await getAllAlbums(clientId);
 
+  // Calculate disk usage for all albums
+  const allAlbumsDiskUsage = await Promise.all(
+    Array.isArray(albums)
+      ? albums.map(async (album: TAlbum) => {
+          return {
+            albumId: album.albumId,
+            diskUsage: await calcAlbumDiskUsage(album.albumId),
+          };
+        })
+      : []
+  );
+
   return (
     <>
       {albums && Array.isArray(albums) && albums.length > 0 ? (
@@ -96,7 +108,11 @@ export default async function AlbumTableSSR({
                       {album.password}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      Album size
+                      {
+                        allAlbumsDiskUsage.find(
+                          (diskUsage) => diskUsage.albumId === album.albumId
+                        )?.diskUsage
+                      }
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <a
@@ -113,7 +129,7 @@ export default async function AlbumTableSSR({
           </table>
         </section>
       ) : (
-        <EmptyState type="Album" />
+        <EmptyState type="Album" route={`/dashboard/${clientId}/new-album`} />
       )}
     </>
   );

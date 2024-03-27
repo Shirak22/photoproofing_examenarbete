@@ -20,7 +20,7 @@ function AuthButton() {
   }, [path]);
 
   // UI to show when signed in
-  if (session) {
+  if (session && !isClientRoute) {
     return (
       <div className="flex justify-end gap-8  bg-gray-100 pr-32 pt-8">
         {/* {!isClientRoute && <p>{session?.user?.name}</p>} */}
@@ -49,18 +49,19 @@ function AuthButton() {
   }
 
   // UI to show when signed out
-  return (
-    <div className="flex justify-end gap-8 p-4 bg-gray-100 pr-32 pt-8">
-      <button
-        type="button"
-        onClick={() => signIn()}
-        className="flex flex-col gap-2"
-      >
-        <ArrowRightEndOnRectangleIcon className="w-7 h-7 m-auto" />
-        <span className="text-sm">Sign In</span>
-      </button>
-    </div>
-  );
+  if (!session && !isClientRoute)
+    return (
+      <div className="flex justify-end gap-8 p-4 bg-gray-100 pr-32 pt-8">
+        <button
+          type="button"
+          onClick={() => signIn()}
+          className="flex flex-col gap-2"
+        >
+          <ArrowRightEndOnRectangleIcon className="w-7 h-7 m-auto" />
+          <span className="text-sm">Sign In</span>
+        </button>
+      </div>
+    );
 }
 
 export default function LoginNavBar() {
