@@ -2,6 +2,7 @@
 
 import { updateSelectedImage } from "@/app/actions/update-actions";
 import { useGlobalContext } from "@/app/context/store";
+import Image from "next/image";
 
 export default function LikeButton({
   image,
@@ -57,7 +58,9 @@ export default function LikeButton({
       onClick={() => handleLikeButton(image.imageId)}
       className=" w-16 h-16 absolute rounded-b-lg top-0 right-6 bg-white shadow-xl flex hover:cursor-pointer"
     >
-      <img
+      <Image
+        width={40}
+        height={40}
         src={`${currentImage.selected ? "/heart-filled.svg" : "/heart.svg"}`}
         alt=""
         className="w-10 h-10 m-auto "

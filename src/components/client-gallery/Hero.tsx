@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Hero({
   title,
   description,
@@ -8,7 +10,9 @@ export default function Hero({
   return (
     <div className="relative h-screen flex justify-center align-middle">
       {/* // TODO - The image should be a dynamic background image. */}
-      <img
+      <Image
+        width={1920}
+        height={1080}
         src="https://images.unsplash.com/photo-1705505460524-8ceac5adcd70?w=2000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MjB8NDI4MzU5N3x8ZW58MHx8fHx8&auto=format&fit=crop&w=2830&q=80&blend=666666&exp=5&blend-mode=multiply"
         alt=""
         className="absolute inset-0 -z-10 h-full w-full object-cover"

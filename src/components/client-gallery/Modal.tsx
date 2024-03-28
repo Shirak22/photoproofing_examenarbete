@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -34,7 +35,9 @@ export default function Modal({ children }: { children: React.ReactNode }) {
         onClick={handleModalClose}
         className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-95  z-20"
       >
-        <img
+        <Image
+          width={50}
+          height={50}
           src="/back-arrow.svg"
           alt=""
           className="p-6 rounded-full  absolute left-0 top-0 hover:cursor-pointer hover:opacity-60 hover:-translate-x-1  transition-all duration-240 z-[99999]"

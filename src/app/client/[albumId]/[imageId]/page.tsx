@@ -1,5 +1,5 @@
-
 import { getImage } from "@/app/actions/get-actions";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function ClientImage({
@@ -20,8 +20,10 @@ export default async function ClientImage({
         </Link>
 
         <div className="relative  w-fit mx-auto h-full rounded-lg ">
-          <img
-            src={image?.path}
+          <Image
+            width={1600}
+            height={1000}
+            src={image?.path as string}
             alt=""
             className="w-full h-full mx-auto rounded-md object-contain"
           />
