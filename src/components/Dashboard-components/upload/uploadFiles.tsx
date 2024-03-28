@@ -1,9 +1,8 @@
 "use client";
-import { uploadFilesAction } from "@/app/actions";
 import UploadFormWrapper from "./UploadFormWrapper";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect, useRef, useState } from "react";
-import Modal from "./client-gallery/Modal";
+import { uploadFilesAction } from "@/app/actions/form-actions";
 
 const initialState = {
   message: "",

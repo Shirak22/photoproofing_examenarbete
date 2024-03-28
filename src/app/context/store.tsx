@@ -7,7 +7,7 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import { TAlbum, TClient, TImage, TThumbnail } from "@/core/types";
+import {  TImage, TThumbnail } from "@/core/types/types";
 
 interface TContextProps {
   noOfSelectedImages: number;
@@ -18,11 +18,6 @@ interface TContextProps {
   setImageArray: Dispatch<SetStateAction<TImage[]>>;
   confirmedAlbum: boolean;
   setConfirmedAlbum: Dispatch<SetStateAction<boolean>>;
-  album: TAlbum;
-  setAlbum: Dispatch<SetStateAction<TAlbum>>;
-  client:TClient;
-  setClient: Dispatch<SetStateAction<TClient>>;
-
 }
 
 const GlobalContext = createContext<TContextProps>({
@@ -41,15 +36,7 @@ const GlobalContext = createContext<TContextProps>({
   confirmedAlbum: false,
   setConfirmedAlbum: (bool): void => {
     bool;
-  },
-  album: {} as TAlbum,
-  setAlbum: (album): void => {
-    album;
-  },
-  client: {} as TClient,
-  setClient: (client): void => {
-    client;
-  },
+  }
 });
 
 export const GlobalContextProvider = ({
@@ -61,8 +48,6 @@ export const GlobalContextProvider = ({
   const [selectedImages, setSelectedImages] = useState<TThumbnail[]>([]);
   const [imageArray, setImageArray] = useState<TImage[]>([]);
   const [confirmedAlbum, setConfirmedAlbum] = useState<boolean>(false);
-  const [album, setAlbum] = useState<TAlbum>({} as TAlbum);
-  const [client, setClient] = useState<TClient>({} as TClient);
 
   return (
     <GlobalContext.Provider
@@ -75,11 +60,6 @@ export const GlobalContextProvider = ({
         setImageArray,
         confirmedAlbum,
         setConfirmedAlbum,
-        album,
-        setAlbum,
-        client,
-        setClient,
-
       }}
     >
       {children}

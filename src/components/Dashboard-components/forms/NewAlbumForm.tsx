@@ -1,18 +1,13 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { createAlbum } from "../app/actions";
 import {
-  UserIcon,
-  HomeModernIcon,
-  EnvelopeIcon,
-  DevicePhoneMobileIcon,
   DocumentIcon,
   DocumentTextIcon,
   ChartPieIcon,
 } from "@heroicons/react/24/outline";
-import ToggleButton from "./client-gallery/ToggleButton";
-import { Switch } from "@headlessui/react";
+import { createAlbum } from "@/app/actions/form-actions";
+
 
 export default function NewAlbumForm({ clientId }: { clientId: string }) {
   const initialState = {
@@ -29,7 +24,7 @@ export default function NewAlbumForm({ clientId }: { clientId: string }) {
   return (
     <div className="flex flex-col h-full w-[35rem]">
       <div className="bg-gray-900 p-12">
-        <h1 className="text-xl font-semibold text-white">New Client</h1>
+        <h1 className="text-xl font-semibold text-white">New Album</h1>
         <p className="text-gray-400">
           Fill in the information below to create a new client.
         </p>

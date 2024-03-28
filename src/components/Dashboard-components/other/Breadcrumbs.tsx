@@ -1,6 +1,6 @@
 "use client";
 
-import { BreadcrumbsNameCheck } from "@/app/actions";
+import { BreadcrumbsNameCheck } from "@/app/actions/check-actions";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -55,29 +55,3 @@ export default function Breadcrumbs() {
     </nav>
   );
 }
-
-// {pathSegments.map((segment, index) => {
-//   const href = `/dashboard/${pathSegments
-//     .slice(0, index + 1)
-//     .join("/")}`;
-//   const isCurrent = href === pathname;
-
-//   return (
-//     <li key={segment}>
-//       <div className="flex items-center">
-//         {isCurrent ? (
-//           <span className="ml-4 text-sm font-medium text-gray-500">
-//             {segment}
-//           </span>
-//         ) : (
-//           <a
-//             href={href}
-//             className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-300"
-//           >
-//             {segment}
-//           </a>
-//         )}
-//       </div>
-//     </li>
-//   );
-// })}

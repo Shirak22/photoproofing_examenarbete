@@ -1,4 +1,5 @@
-import { getImage } from "@/app/actions";
+
+import { getImage } from "@/app/actions/get-actions";
 import Link from "next/link";
 
 export default async function ClientImage({

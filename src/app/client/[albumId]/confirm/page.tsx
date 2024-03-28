@@ -1,4 +1,4 @@
-import { getAlbum, getAlbumThumbnails } from "@/app/actions";
+import { getAlbum, getAlbumThumbnails } from "@/app/actions/get-actions";
 import ImageCardConfirm from "@/components/client-gallery/ImageCardConfirm";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

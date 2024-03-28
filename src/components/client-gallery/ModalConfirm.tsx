@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 export default function ModalConfirm({
   children,
@@ -12,7 +12,6 @@ export default function ModalConfirm({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const router = useRouter();
   // Handles Escape key to close modal
 
   const handleModalClose = () => {

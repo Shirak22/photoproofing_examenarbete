@@ -1,4 +1,4 @@
-import NewAlbumForm from "@/components/NewAlbumForm";
+import NewAlbumForm from "@/components/Dashboard-components/forms/NewAlbumForm";
 
 export default function NewAlbumPage({
   params,

@@ -3,7 +3,6 @@
 import { Switch } from "@headlessui/react";
 import { useGlobalContext } from "@/app/context/store";
 import { useEffect, useState } from "react";
-import { getAlbumThumbnails } from "@/app/actions";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

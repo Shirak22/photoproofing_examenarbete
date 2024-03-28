@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ImageCard from "./ImageCard";
-import { TAlbum } from "@/core/types";
+import ImageCard from "../../client-components/ImageCard";
+import { TAlbum } from "@/core/types/types";
 
 export default function AlbumGallery({
   images,

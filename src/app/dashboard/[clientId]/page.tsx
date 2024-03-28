@@ -1,8 +1,6 @@
-import { getAllAlbums, getAllImages, getClient, getPhotographer } from "@/app/actions";
-import AlbumTableSSR from "@/components/AlbumTableSSR";
-import NewAlbumForm from "@/components/NewAlbumForm";
+import { getAllAlbums, getAllImages, getClient, getPhotographer } from "@/app/actions/get-actions";
+import AlbumTableSSR from "@/components/Dashboard-components/tables/AlbumTableSSR";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
 
 interface Stat {
   name: string;

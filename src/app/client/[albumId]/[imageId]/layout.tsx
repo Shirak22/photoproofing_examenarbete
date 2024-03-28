@@ -1,4 +1,5 @@
-import { getImage } from "@/app/actions";
+
+import { getImage } from "@/app/actions/get-actions";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 
