@@ -102,8 +102,6 @@ export default function SelectionBar({
                 Confirm
               </button>
             </div>
-
-            <p>{album.description}</p>
           </article>
         </ModalConfirm>
       </article>

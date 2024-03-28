@@ -5,6 +5,7 @@ import {
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -29,7 +30,9 @@ function AuthButton() {
             {session?.user?.name}
           </p>
           <div>
-            <img
+            <Image
+              width={48}
+              height={48}
               className="inline-block h-12 w-12 rounded-full object-cover"
               src="https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZmFjZXxlbnwwfHwwfHx8MA%3D%3D"
               alt=""
