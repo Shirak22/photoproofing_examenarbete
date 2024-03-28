@@ -1,4 +1,5 @@
-import { calcDiskUsage, getPhotographer } from "@/app/actions";
+import { calcDiskUsage } from "@/app/actions/disk-usage-actions";
+import { getPhotographer } from "@/app/actions/get-actions";
 
 export default async function DiskUsage(props: { email: string }) {
     const photographer = await getPhotographer(props.email);

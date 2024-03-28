@@ -1,6 +1,6 @@
-import ClientTableSSR from "@/components/ClientTableSSR";
+import ClientTableSSR from "@/components/Dashboard-components/tables/ClientTableSSR";
 import { getServerSession } from "next-auth";
-import { getAllAlbums, getAllClients, getPhotographer } from "../actions";
+import { getAllAlbums, getAllClients, getPhotographer } from "../actions/get-actions";
 
 interface Stat {
   name: string;

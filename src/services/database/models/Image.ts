@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import { TImage } from "@/core/types";
+import { TImage } from "@/core/types/types";
 
 const imageSchema = new Schema<TImage>({
   imageId: {

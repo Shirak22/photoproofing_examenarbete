@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import DiskUsage from "./DiskUsage";
+import DiskUsage from "./Dashboard-components/other/DiskUsage";
 import { redirect } from "next/navigation";
 
 const navigation = [

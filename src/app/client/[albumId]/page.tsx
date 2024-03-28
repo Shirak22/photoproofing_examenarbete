@@ -1,10 +1,5 @@
-import {
-  getAlbum,
-  getAlbumThumbnails,
-  getClient,
-  getPhotographer,
-  getPhotographerById,
-} from "@/app/actions";
+
+import { getAlbum, getClient, getPhotographerById } from "@/app/actions/get-actions";
 import Footer from "@/components/client-gallery/Footer";
 import GallerySection from "@/components/client-gallery/GallerySection";
 import Hero from "@/components/client-gallery/Hero";

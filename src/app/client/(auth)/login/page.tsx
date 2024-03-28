@@ -1,8 +1,8 @@
 "use client";
 
 import { signIn, SignInResponse } from "next-auth/react";
-import { redirect, useParams } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { redirect } from "next/navigation";
+import {  useEffect, useState } from "react";
 
 export default function AuthLogin() {
   const [results, setResults] = useState<SignInResponse>();
@@ -11,6 +11,7 @@ export default function AuthLogin() {
   //we use the if statement to check if the window object is available, if not we set the albumId to null
   //beacuse the window object is not available on the server side
   let useSearchParams;
+  
   if (typeof window !== "undefined") {
     useSearchParams = new URLSearchParams(window.location.search);
   }
@@ -35,8 +36,6 @@ export default function AuthLogin() {
   };
 
   useEffect(() => {
-    console.log(results);
-
     //chech if the results object is available and if the ok property is true
     if (results && results.ok) {
       redirect(`/client/${albumId}`);
