@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function AlbumGrid({ files }: { files: any[] }) {
   return (
     <ul
@@ -6,7 +8,9 @@ export default function AlbumGrid({ files }: { files: any[] }) {
     >
       {files.map((file, index) => (
         <li key={index} className="relative">
-          <img
+          <Image
+            width={400}
+            height={256}
             src={file.source}
             alt={file.title}
             className="w-full h-64 object-cover rounded-lg"

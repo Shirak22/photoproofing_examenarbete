@@ -2,6 +2,7 @@
 
 import { updateSelectedImage } from "@/app/actions/update-actions";
 import { useGlobalContext } from "@/app/context/store";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -67,7 +68,9 @@ export default function ImageCardClient({
           onClick={() => handleLikeButton(image.imageId)}
           className=" w-16 h-16 absolute rounded-b-lg top-0 right-6 bg-white shadow-xl flex hover:cursor-pointer"
         >
-          <img
+          <Image
+            width={40}
+            height={40}
             src={`${
               currentImage.selected ? "/heart-filled.svg" : "/heart.svg"
             }`}
@@ -76,7 +79,9 @@ export default function ImageCardClient({
           />
         </div>
       )}
-      <img
+      <Image
+        width={1920}
+        height={1080}
         onClick={handleClick}
         key={image.imageId}
         src={image.path}

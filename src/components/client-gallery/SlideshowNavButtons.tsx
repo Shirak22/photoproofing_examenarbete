@@ -1,6 +1,7 @@
 "use client";
 
 import { useGlobalContext } from "@/app/context/store";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -84,13 +85,19 @@ export default function SlideshowNavButtons({
         onClick={() => handlePrevClick()}
         className="px-3 py-3 rounded-full hover:cursor-pointer hover:scale-110 transition-all duration-240"
       >
-        <img src="/nav-arrow.svg" alt="" className=" rotate-180" />
+        <Image
+          width={50}
+          height={50}
+          src="/nav-arrow.svg"
+          alt=""
+          className=" rotate-180"
+        />
       </button>
       <button
         onClick={() => handleNextClick()}
         className="px-3 py-3 rounded-full hover:cursor-pointer hover:scale-110 transition-all duration-240"
       >
-        <img src="/nav-arrow.svg" alt="" />
+        <Image width={50} height={50} src="/nav-arrow.svg" alt="" />
       </button>
     </nav>
   );

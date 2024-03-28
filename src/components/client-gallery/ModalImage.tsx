@@ -3,6 +3,7 @@
 import LikeButton from "./LikeButton";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "@/app/context/store";
+import Image from "next/image";
 
 export default function ModalImage({
   image,
@@ -37,8 +38,10 @@ export default function ModalImage({
           <LikeButton image={currentImage} selectedLimit={selectedLimit} />
         )}
 
-        <img
+        <Image
           // Renders out large image with Watermark
+          width={1600}
+          height={1000}
           src={image?.path}
           alt=""
           className="w-full h-full mx-auto rounded-md object-contain"
