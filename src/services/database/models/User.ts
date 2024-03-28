@@ -1,4 +1,4 @@
-import { TUser } from "@/core/types";
+import { TUser } from "@/core/types/types";
 import { Schema, model, models } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 

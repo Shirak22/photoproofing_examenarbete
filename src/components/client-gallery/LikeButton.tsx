@@ -1,8 +1,7 @@
 "use client";
 
-import { updateSelectedImage } from "@/app/actions";
+import { updateSelectedImage } from "@/app/actions/update-actions";
 import { useGlobalContext } from "@/app/context/store";
-import { useState } from "react";
 
 export default function LikeButton({
   image,
@@ -34,7 +33,6 @@ export default function LikeButton({
     if (noOfSelectedImages >= selectedLimit && !currentImage.selected) {
       return;
     }
-    console.log(`Liked image with id: ${imageId}`);
     setSelectedImages((prev) =>
       prev.map((selectedImage) =>
         selectedImage.imageId === imageId

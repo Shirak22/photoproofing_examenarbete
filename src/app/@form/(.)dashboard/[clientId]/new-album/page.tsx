@@ -1,6 +1,5 @@
-import ModalForm from "@/components/ModalForm";
-import NewAlbumForm from "@/components/NewAlbumForm";
-import NewClientForm from "@/components/NewClientForm";
+import ModalForm from "@/components/client-components/ModalForm";
+import NewAlbumForm from "@/components/Dashboard-components/forms/NewAlbumForm";
 
 export default function NewAlbumPageIntercept({
   params,
@@ -9,7 +8,6 @@ export default function NewAlbumPageIntercept({
     clientId: string;
   };
 }) {
-  console.log(params.clientId);
 
   return (
     <ModalForm>

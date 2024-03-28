@@ -1,4 +1,4 @@
-import { TImage, TThumbnail } from "@/core/types";
+import { TImage, TThumbnail } from "@/core/types/types";
 import {
   GetObjectCommand,
   PutObjectCommand,
@@ -6,23 +6,14 @@ import {
 } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 import Image from "../database/models/Image";
-import { getAlbum, getClient } from "@/app/actions";
-import Jimp from "jimp";
 import Thumbnail from "../database/models/Thumbnail";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { get } from "http";
-import User from "../database/models/User";
-import { revalidatePath, revalidateTag } from "next/cache";
-import path from "path";
-import { text } from "stream/consumers";
+import { createThumbnail } from "../image-manipulation/create-thumbnails";
+import { getAlbum, getClient } from "@/app/actions/get-actions";
+import { createWatermark } from "../image-manipulation/create-watermark";
 
-//storage usage
-//file input validation on server and client side
-//error handling
-//ui progress bar
-//watermark images
-//image compression
-//extension validation
+
+
 
 interface TS3Client {
   region: string;
@@ -40,6 +31,8 @@ const s3 = new S3Client({
   },
 } as TS3Client);
 
+
+//upload image to s3
 export async function uploadToS3(key: string, fileBuffer: Buffer) {
   try {
     const params = {
@@ -60,7 +53,7 @@ export async function pushImageToDatabase(file: TImage) {
   try {
     const image = new Image(file);
     await image.save();
-    console.log("image has been saved successfuly! ", image);
+    
   } catch (error) {
     console.log(
       "Something went wrong and we could not save the image to database",
@@ -74,7 +67,6 @@ export async function pushThumbnailToDatabase(file: TThumbnail) {
   try {
     const thumbnail = new Thumbnail(file);
     await thumbnail.save();
-    console.log("thumbnail has been saved successfuly! ", thumbnail);
   } catch (error) {
     console.log(
       "Something went wrong and we could not save the Thumbnail to database",
@@ -84,11 +76,12 @@ export async function pushThumbnailToDatabase(file: TThumbnail) {
   }
 }
 
+
+
+//upload multiple files to s3 and save them to database after creating thumbnails and watermarks
 export async function uploadFiles(
   files: File[],
   albumId: string,
-  thumbnails: boolean = false,
-  watermark: boolean = false
 ) {
   try {
     if (files[0].size === 0) throw new Error("No files to upload");
@@ -132,7 +125,6 @@ export async function uploadFiles(
       if (album.proofing) {
         watermarked = await createWatermark(fileBuffer, client.photographerId);
       }
-
       await pushThumbnailToDatabase(databaseThumbnailInfo);
       await pushImageToDatabase(databaseFileInfo);
 
@@ -148,23 +140,7 @@ export async function uploadFiles(
   }
 }
 
-export async function createThumbnail(file: File) {
-  console.log("create thumbnail FILE", file);
-  if (file.size === 0) throw new Error("No files to upload");
 
-  //validate file type
-  checkMimeType(file);
-
-  const fileBuffer = Buffer.from(await file.arrayBuffer());
-
-  let resizedImage = await Jimp.read(fileBuffer);
-  resizedImage.resize(300, Jimp.AUTO).quality(60);
-
-  const thumbnail = await resizedImage.getBufferAsync(file.type);
-
-  const updatedFile = new File([thumbnail], file.name, { type: file.type });
-  return updatedFile;
-}
 
 export function checkMimeType(file: File) {
   if (
@@ -190,22 +166,3 @@ export async function getImageUrl(filepath: string) {
   }
 }
 
-export async function createWatermark(buffer: Buffer, photographerId: string) {
-  const user = await User.findOne({ userId: photographerId }); // Use the correct syntax for finding a user
-
-  const companyName = user.companyName; // Get the companyName from the user object
-  const imageBuffer = await Jimp.read(buffer);
-  const waterMarkText = "Proofing version || " + companyName;
-  const font = await Jimp.loadFont("src/core/font/BULLETTO_48_WHITE.fnt");
-  const textWidth = Jimp.measureText(font, waterMarkText);
-  const textHeight = Jimp.measureTextHeight(font, waterMarkText, 1000);
-  const x = imageBuffer.getWidth() / 2 - textWidth / 2;
-  const y = imageBuffer.getHeight() / 2 - textHeight / 2;
-
-  imageBuffer.print(font, x, y, waterMarkText);
-  const watermarkedBuffer = await imageBuffer.getBufferAsync(
-    imageBuffer.getMIME()
-  );
-
-  return watermarkedBuffer;
-}

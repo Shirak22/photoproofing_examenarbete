@@ -1,4 +1,4 @@
-import { getAlbum, getAllImages, getImage } from "@/app/actions";
+import { getAlbum, getImage } from "@/app/actions/get-actions";
 import Modal from "@/components/client-gallery/Modal";
 import ModalImage from "@/components/client-gallery/ModalImage";
 import SelectionBar from "@/components/client-gallery/SelectionBar";

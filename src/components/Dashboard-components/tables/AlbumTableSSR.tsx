@@ -1,7 +1,8 @@
-import { calcAlbumDiskUsage, getAllAlbums } from "@/app/actions";
-import { TAlbum } from "@/core/types";
+import { TAlbum } from "@/core/types/types";
 import Link from "next/link";
-import EmptyState from "./EmptyState";
+import EmptyState from "../other/EmptyState";
+import { calcAlbumDiskUsage } from "@/app/actions/disk-usage-actions";
+import { getAllAlbums } from "@/app/actions/get-actions";
 
 export default async function AlbumTableSSR({
   clientId,

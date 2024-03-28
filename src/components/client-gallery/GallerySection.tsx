@@ -1,4 +1,4 @@
-import { TAlbum } from "@/core/types";
+import { TAlbum } from "@/core/types/types";
 import SelectionBar from "./SelectionBar";
 import MasonryGrid from "./MasonryGrid";
 

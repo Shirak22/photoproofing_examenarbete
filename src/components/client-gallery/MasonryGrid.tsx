@@ -1,9 +1,9 @@
 "use client";
 import { useGlobalContext } from "@/app/context/store";
 import ImageCardClient from "./ImageCardClient";
-import { TAlbum } from "@/core/types";
+import { TAlbum } from "@/core/types/types";
 import { useEffect } from "react";
-import { getAlbumThumbnails } from "@/app/actions";
+import { getAlbumThumbnails } from "@/app/actions/get-actions";
 
 export default function MasonryGrid({ album }: { album: TAlbum }) {
   const { selectedImages, setSelectedImages, setImageArray } =

@@ -1,11 +1,11 @@
 "use client";
 
-import { TAlbum, TImage, TThumbnail } from "@/core/types";
+import { TAlbum, TImage, TThumbnail } from "@/core/types/types";
 import ToggleButton from "./ToggleButton";
 import { useGlobalContext } from "@/app/context/store";
 import { useEffect, useState } from "react";
 import ModalConfirm from "./ModalConfirm";
-import { confirmAlbumSelection } from "@/app/actions";
+import { confirmAlbumSelection } from "@/app/actions/update-actions";
 
 export default function SelectionBar({
   inModal,

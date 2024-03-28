@@ -1,15 +1,11 @@
-import {
-  calcAlbumDiskUsage,
-  getAlbum,
-  getAlbumThumbnails,
-} from "@/app/actions";
+
 import {
   DocumentDuplicateIcon,
-  LockOpenIcon,
-  LockClosedIcon,
 } from "@heroicons/react/24/outline";
-import DashboardGallery from "@/components/DashboardGallery";
-import UploadFiles from "@/components/uploadFiles";
+import DashboardGallery from "@/components/Dashboard-components/gallery/DashboardGallery";
+import UploadFiles from "@/components/Dashboard-components/upload/uploadFiles";
+import { getAlbum, getAlbumThumbnails } from "@/app/actions/get-actions";
+import { calcAlbumDiskUsage } from "@/app/actions/disk-usage-actions";
 export default async function Album({
   params,
 }: {

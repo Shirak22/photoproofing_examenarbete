@@ -1,9 +1,8 @@
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getAlbum, getPhotographer } from "@/app/actions";
-import { AuthOptions } from "next-auth";
+import { getAlbum, getPhotographer } from "@/app/actions/get-actions";
 
-
+// Auth options for NextAuth to be used in the API route handler in pages/api/auth/[...nextauth].ts
  const authOptions  = {
     secret: process.env.NEXTAUTH_SECRET,
     providers: [

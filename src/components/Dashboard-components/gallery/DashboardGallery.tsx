@@ -2,8 +2,7 @@
 import { Switch } from "@headlessui/react";
 import { useState } from "react";
 import ImageCardDashboard from "./ImageCardDashboard";
-import Link from "next/link";
-import UploadFiles from "./uploadFiles";
+import UploadFiles from "../upload/uploadFiles";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

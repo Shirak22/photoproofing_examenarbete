@@ -1,8 +1,8 @@
-import { getAllClients, getPhotographer } from "@/app/actions";
-import { TClient } from "@/core/types";
-import EmptyState from "./EmptyState";
+import { TClient } from "@/core/types/types";
+import EmptyState from "../other/EmptyState";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { getAllClients, getPhotographer } from "@/app/actions/get-actions";
 
 export default async function ClientTableSSR() {
   const session = await getServerSession();

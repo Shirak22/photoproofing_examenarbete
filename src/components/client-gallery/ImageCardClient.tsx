@@ -1,6 +1,6 @@
 "use client";
 
-import { updateSelectedImage } from "@/app/actions";
+import { updateSelectedImage } from "@/app/actions/update-actions";
 import { useGlobalContext } from "@/app/context/store";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
